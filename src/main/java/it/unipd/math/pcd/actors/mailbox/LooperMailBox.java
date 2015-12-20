@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Riccardo Cardin
+ * Copyright (c) 2015 Gabriele Marcomin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,47 +23,45 @@
  * <p/>
  * Please, insert description here.
  *
- * @author Riccardo Cardin
+ * @author Gabriele Marcomin
  * @version 1.0
  * @since 1.0
  */
+package it.unipd.math.pcd.actors.mailbox;
 
-/**
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-package it.unipd.math.pcd.actors;
+import it.unipd.math.pcd.actors.ExecMessage;
+import it.unipd.math.pcd.actors.Message;
 
-/**
- * Defines common properties of all actors.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-public abstract class AbsActor<T extends Message> implements Actor<T>,ExecMessage{
+public class LooperMailBox implements Runnable {
+	private ExecMessage actor;
+	private boolean stop = false;
+	private MailBox<Message> mailbox;
+	@Override
+	public void run() {
+		while(!stop){
+			synchronized (mailbox) {
+				if(mailbox.isEmpty())
+					try {
+						wait();
+					} 
+					catch (InterruptedException e) {
+						stop=true;
+						e.printStackTrace();
+					}
+				else{
+					Message tmp = mailbox.remove();
+					actor.signal(tmp);
+				}
+					
+			}
+			try {
+				Thread.sleep(280);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
-    /**
-     * Self-reference of the actor
-     */
-    protected ActorRef<T> self;
+	}
 
-    /**
-     * Sender of the current message
-     */
-    protected ActorRef<T> sender;
-
-    /**
-     * Sets the self-referece.
-     *
-     * @param self The reference to itself
-     * @return The actor.
-     */
-    protected final Actor<T> setSelf(ActorRef<T> self) {
-        this.self = self;
-        return this;
-    }
 }

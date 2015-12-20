@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Riccardo Cardin
+ * Copyright (c) 2015 Gabriele Marcomin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,47 +23,37 @@
  * <p/>
  * Please, insert description here.
  *
- * @author Riccardo Cardin
+ * @author Gabriele Marcomin
  * @version 1.0
  * @since 1.0
  */
+package it.unipd.math.pcd.actors.mailbox;
 
-/**
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-package it.unipd.math.pcd.actors;
+import it.unipd.math.pcd.actors.Message;
 
-/**
- * Defines common properties of all actors.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-public abstract class AbsActor<T extends Message> implements Actor<T>,ExecMessage{
+import java.util.LinkedList;
+import java.util.Queue;
 
-    /**
-     * Self-reference of the actor
-     */
-    protected ActorRef<T> self;
+public class MailBoxQueue<T extends Message> implements MailBox<T>{
+	private Queue<T> queue;
+	public MailBoxQueue(){
+		queue = new LinkedList<T>();
+	}
+	@Override
+	public synchronized boolean addMessage(T message){
+		return queue.add(message);
+	}
+	@Override
+	public synchronized boolean isEmpty(){
+		return queue.isEmpty();
+	}
+	@Override
+	public T element() {
+		return queue.element();
+	}
+	@Override
+	public T remove() {
+		return queue.remove();
+	}
 
-    /**
-     * Sender of the current message
-     */
-    protected ActorRef<T> sender;
-
-    /**
-     * Sets the self-referece.
-     *
-     * @param self The reference to itself
-     * @return The actor.
-     */
-    protected final Actor<T> setSelf(ActorRef<T> self) {
-        this.self = self;
-        return this;
-    }
 }

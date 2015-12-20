@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Riccardo Cardin
+ * Copyright (c) 2015 Gabriele Marcomin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,47 +23,23 @@
  * <p/>
  * Please, insert description here.
  *
- * @author Riccardo Cardin
+ * @author Gabriele Marcomin
  * @version 1.0
  * @since 1.0
  */
+package it.unipd.math.pcd.actors.message;
 
-/**
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-package it.unipd.math.pcd.actors;
+import it.unipd.math.pcd.actors.ActorRef;
+import it.unipd.math.pcd.actors.Message;
 
-/**
- * Defines common properties of all actors.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-public abstract class AbsActor<T extends Message> implements Actor<T>,ExecMessage{
+public abstract class AbsMessage<T> implements Message {
+	private ActorRef<Message> target;
+	private T payload;
+	public AbsMessage(){}
+	abstract protected void tag(T payload,ActorRef<Message> target);
+	public final T elaborate(){
+		tag(payload,target);
+		return payload;
+	}
 
-    /**
-     * Self-reference of the actor
-     */
-    protected ActorRef<T> self;
-
-    /**
-     * Sender of the current message
-     */
-    protected ActorRef<T> sender;
-
-    /**
-     * Sets the self-referece.
-     *
-     * @param self The reference to itself
-     * @return The actor.
-     */
-    protected final Actor<T> setSelf(ActorRef<T> self) {
-        this.self = self;
-        return this;
-    }
 }
