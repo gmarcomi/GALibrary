@@ -29,11 +29,11 @@
  */
 package it.unipd.math.pcd.actors.mailbox;
 
-import it.unipd.math.pcd.actors.ExecMessage;
 import it.unipd.math.pcd.actors.Message;
+import it.unipd.math.pcd.actors.state.ExecutionState;
 
 public class LooperMailBox implements Runnable {
-	private ExecMessage actor;
+	private ExecutionState actor;
 	private boolean stop = false;
 	private MailBox<Message> mailbox;
 	@Override
@@ -49,8 +49,10 @@ public class LooperMailBox implements Runnable {
 						e.printStackTrace();
 					}
 				else{
-					Message tmp = mailbox.remove();
-					actor.signal(tmp);
+					if(!actor.isOccupy()){
+						Message tmp = mailbox.remove();
+						actor.signal(tmp);
+					}
 				}
 					
 			}

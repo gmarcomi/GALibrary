@@ -37,6 +37,8 @@
  */
 package it.unipd.math.pcd.actors;
 
+import it.unipd.math.pcd.actors.state.ExecutionState;
+
 /**
  * Defines common properties of all actors.
  *
@@ -44,7 +46,7 @@ package it.unipd.math.pcd.actors;
  * @version 1.0
  * @since 1.0
  */
-public abstract class AbsActor<T extends Message> implements Actor<T>,ExecMessage{
+public abstract class AbsActor<T extends Message> implements Actor<T>,ExecutionState{
 
     /**
      * Self-reference of the actor
@@ -66,4 +68,12 @@ public abstract class AbsActor<T extends Message> implements Actor<T>,ExecMessag
         this.self = self;
         return this;
     }
+    @Override
+    public void signal(Message message){
+    	
+    }
+    @Override
+	public boolean isOccupy(){
+		return false;
+	}
 }
