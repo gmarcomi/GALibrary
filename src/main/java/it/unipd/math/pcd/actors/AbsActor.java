@@ -37,7 +37,11 @@
  */
 package it.unipd.math.pcd.actors;
 
-import it.unipd.math.pcd.actors.state.ExecutionState;
+import it.unipd.math.pcd.actors.decisions.MessageReceiver;
+import it.unipd.math.pcd.actors.mailbox.LooperMailBox;
+import it.unipd.math.pcd.actors.mailbox.MailBox;
+import it.unipd.math.pcd.actors.mailbox.MailBoxQueue;
+
 
 /**
  * Defines common properties of all actors.
@@ -46,8 +50,11 @@ import it.unipd.math.pcd.actors.state.ExecutionState;
  * @version 1.0
  * @since 1.0
  */
-public abstract class AbsActor<T extends Message> implements Actor<T>,ExecutionState{
-
+public abstract class AbsActor<T extends Message> implements Actor<T>{
+	/**
+	 * reference of mailbox
+	 */
+	private MailBox<T> mailBox;
     /**
      * Self-reference of the actor
      */
@@ -57,7 +64,13 @@ public abstract class AbsActor<T extends Message> implements Actor<T>,ExecutionS
      * Sender of the current message
      */
     protected ActorRef<T> sender;
-
+    private MessageReceiver receiver;
+    public AbsActor(){
+    	mailBox = new MailBoxQueue<T>();
+    	LooperMailBox<T> looper = new LooperMailBox<>(this, mailBox);
+    	Thread lp = new Thread(looper);
+    	lp.start();
+    }
     /**
      * Sets the self-referece.
      *
@@ -68,12 +81,4 @@ public abstract class AbsActor<T extends Message> implements Actor<T>,ExecutionS
         this.self = self;
         return this;
     }
-    @Override
-    public void signal(Message message){
-    	
-    }
-    @Override
-	public boolean isOccupy(){
-		return false;
-	}
 }

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Gabriele Marcomin
+ * Copyright (c) 2015 Riccardo Cardin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,33 @@
  * @version 1.0
  * @since 1.0
  */
-package it.unipd.math.pcd.actors.state;
+
+/**
+ * Please, insert description here.
+ *
+ * @author Gabriele Marcomin
+ * @version 1.0
+ * @since 1.0
+ */
+package it.unipd.math.pcd.actors.decisions;
 
 import it.unipd.math.pcd.actors.Message;
+import it.unipd.math.pcd.actors.mailbox.MailBoxQueue;
 
-public interface ExecutionState {
-	/**
-	 * Define an interface of executor of message
-	 */
-	public void signal(Message message);
-	public boolean isOccupy();
+/**
+ * The invoker of the messages received by an actor
+ *
+ * @author Riccardo Cardin
+ * @version 1.0
+ * @since 1.0
+ */
+public class MessageManager {
+	private MailBoxQueue<Message> mailBox;
+	public MessageManager(){
+		mailBox = new MailBoxQueue<Message>();
+	}
+	public void storeMessage(Message t){
+		mailBox.addMessage(t);
+	}
+
 }

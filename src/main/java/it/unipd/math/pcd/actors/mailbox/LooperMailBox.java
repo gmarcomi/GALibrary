@@ -29,16 +29,22 @@
  */
 package it.unipd.math.pcd.actors.mailbox;
 
+import it.unipd.math.pcd.actors.Actor;
 import it.unipd.math.pcd.actors.Message;
-import it.unipd.math.pcd.actors.state.ExecutionState;
 
-public class LooperMailBox implements Runnable {
-	private ExecutionState actor;
+public class LooperMailBox<T extends Message> implements Runnable {
+	private Actor<T> actor;
 	private boolean stop = false;
-	private MailBox<Message> mailbox;
+	private MailBox<T> mailbox;
+	public LooperMailBox(Actor<T> actor,MailBox<T> mailbox) {
+		this.actor=actor;
+		this.mailbox=mailbox;
+	}
 	@Override
 	public void run() {
 		while(!stop){
+			//reference of the next elaborated message
+			T tmp=null;
 			synchronized (mailbox) {
 				if(mailbox.isEmpty())
 					try {
@@ -49,21 +55,18 @@ public class LooperMailBox implements Runnable {
 						e.printStackTrace();
 					}
 				else{
-					if(!actor.isOccupy()){
-						Message tmp = mailbox.remove();
-						actor.signal(tmp);
-					}
+					//get the reference of the top
+					tmp = mailbox.remove();
 				}
-					
 			}
+			//signal the actor for the elaboration
+			actor.receive(tmp);
 			try {
 				Thread.sleep(280);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+			} 
+			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
-
 }
