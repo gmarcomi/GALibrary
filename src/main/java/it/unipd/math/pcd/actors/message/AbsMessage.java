@@ -29,16 +29,15 @@
  */
 package it.unipd.math.pcd.actors.message;
 
-import it.unipd.math.pcd.actors.ActorRef;
+import java.io.Serializable;
 import it.unipd.math.pcd.actors.Message;
 
-public abstract class AbsMessage<T> implements Message {
-	private ActorRef<Message> target;
+public abstract class AbsMessage<T> implements Message,Serializable {
 	private T payload;
-	public AbsMessage(){}
-	abstract protected void tag(T payload,ActorRef<Message> target);
-	public final T elaborate(){
-		tag(payload,target);
+	public AbsMessage(T payload){
+		this.payload=payload;
+	}
+	public final T getPayload(){
 		return payload;
 	}
 

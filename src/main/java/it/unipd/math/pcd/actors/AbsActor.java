@@ -81,4 +81,9 @@ public abstract class AbsActor<T extends Message> implements Actor<T>{
         this.self = self;
         return this;
     }
+    
+    public void addMessage(T message,ActorRef<T> sender){
+    	this.sender = sender;
+    	mailBox.addMessage(message);
+    }
 }

@@ -23,8 +23,8 @@
  * <p/>
  * Please, insert description here.
  *
- * @author Riccardo Cardin
- * @version 1.0
+ * @author Gabriele Marcomin
+ * @version 1.1
  * @since 1.0
  */
 
@@ -55,4 +55,11 @@ public interface Actor<T extends Message> {
      *         the actor.
      */
     void receive(T message);
+    /**
+     * Add a new {@code message} to mailbox
+     *
+     * @param message The type of messages the actor can receive
+     * @param sender The sender of the message
+     */
+    void addMessage(T message,ActorRef<T> sender);
 }

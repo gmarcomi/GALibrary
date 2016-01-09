@@ -22,15 +22,11 @@
  * SOFTWARE.
  * <p/>
  * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
+ * 
+ * @author Gabriele Marcomin
+ * @version 1.1
  * @since 1.0
- */
-
-/**
- * Please, insert description here.
- *
+ * 
  * @author Riccardo Cardin
  * @version 1.0
  * @since 1.0
@@ -44,9 +40,6 @@ import java.util.Map;
 /**
  * A map-based implementation of the actor system.
  *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
  */
 public abstract class AbsActorSystem implements ActorSystem {
 
@@ -80,4 +73,9 @@ public abstract class AbsActorSystem implements ActorSystem {
     }
 
     protected abstract ActorRef createActorReference(ActorMode mode);
+    
+    @Override
+    public Actor<? extends Message> getActor(ActorRef<? extends Message> actorRef){
+		return actors.get(actorRef);
+    }
 }

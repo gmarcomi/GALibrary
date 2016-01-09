@@ -29,20 +29,22 @@
  */
 package it.unipd.math.pcd.actors.mailbox;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import it.unipd.math.pcd.actors.Actor;
 import it.unipd.math.pcd.actors.Message;
 
 public class LooperMailBox<T extends Message> implements Runnable {
 	private Actor<T> actor;
-	private boolean stop = false;
 	private MailBox<T> mailbox;
+	private AtomicBoolean stop = new AtomicBoolean(false);
 	public LooperMailBox(Actor<T> actor,MailBox<T> mailbox) {
 		this.actor=actor;
 		this.mailbox=mailbox;
 	}
 	@Override
 	public void run() {
-		while(!stop){
+		while(!stop.get()){
 			//reference of the next elaborated message
 			T tmp=null;
 			synchronized (mailbox) {
@@ -51,7 +53,7 @@ public class LooperMailBox<T extends Message> implements Runnable {
 						wait();
 					} 
 					catch (InterruptedException e) {
-						stop=true;
+						stop.set(true);
 						e.printStackTrace();
 					}
 				else{
@@ -68,5 +70,8 @@ public class LooperMailBox<T extends Message> implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+	public void stop(){
+		stop.set(true);
 	}
 }
