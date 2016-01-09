@@ -37,22 +37,23 @@
  */
 package it.unipd.math.pcd.actors;
 
-import it.unipd.math.pcd.actors.impl.ActorSystemImpl;
 import it.unipd.math.pcd.actors.utils.ActorSystemFactory;
-import it.unipd.math.pcd.actors.utils.actors.TrivialActor;
-import it.unipd.math.pcd.actors.utils.messages.TrivialMessage;
+import it.unipd.math.pcd.actors.utils.actors.ping.pong.PingPongActor;
+import it.unipd.math.pcd.actors.utils.actors.StoreActor;
+import it.unipd.math.pcd.actors.utils.messages.StoreMessage;
+import it.unipd.math.pcd.actors.utils.messages.ping.pong.PingMessage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test cases about {@link ActorRef} type.
+ * Integration test suite on actor features.
  *
  * @author Riccardo Cardin
  * @version 1.0
  * @since 1.0
  */
-public class ActorRefTest {
+public class ActorIT {
 
     private ActorSystem system;
 
@@ -61,21 +62,36 @@ public class ActorRefTest {
      */
     @Before
     public void init() {
-        system = ActorSystemFactory.buildActorSystem();
+        this.system = ActorSystemFactory.buildActorSystem();
     }
 
     @Test
-    public void shouldImplementComparable() {
-        ActorRef ref1 = system.actorOf(TrivialActor.class);
-        ActorRef ref2 = system.actorOf(TrivialActor.class);
-        Assert.assertNotEquals("Two references must appear as different using the compareTo method",
-                0, ref1.compareTo(ref2));
-        Assert.assertEquals("A reference must be equal to itself according to compareTo method",
-                0, ref1.compareTo(ref1));
+    public void shouldBeAbleToSendAMessage() throws InterruptedException {
+        TestActorRef ref = new TestActorRef(system.actorOf(StoreActor.class));
+        StoreActor actor = (StoreActor) ref.getUnderlyingActor(system);
+        // Send a string to the actor
+        ref.send(new StoreMessage("Hello World"), ref);
+        // Wait that the message is processed
+        Thread.sleep(1000);
+        // Verify that the message is been processed
+        Assert.assertEquals("The message has to be received by the actor", "Hello World", actor.getData());
+    }
+
+    @Test
+    public void shouldBeAbleToRespondToAMessage() throws InterruptedException {
+        TestActorRef pingRef = new TestActorRef(system.actorOf(PingPongActor.class));
+        TestActorRef pongRef = new TestActorRef(system.actorOf(PingPongActor.class));
+
+        pongRef.send(new PingMessage(), pingRef);
+
+        Thread.sleep(2000);
+
+        PingPongActor pingActor = (PingPongActor) pingRef.getUnderlyingActor(system);
+        PingPongActor pongActor = (PingPongActor) pongRef.getUnderlyingActor(system);
+
+        Assert.assertEquals("A ping actor has received a ping message", "Ping",
+                pingActor.getLastMessage().getMessage());
+        Assert.assertEquals("A pong actor has received back a pong message", "Pong",
+                pongActor.getLastMessage().getMessage());
     }
 }
-
-
-
-
-
