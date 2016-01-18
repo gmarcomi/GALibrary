@@ -1,7 +1,6 @@
-/**
- * The MIT License (MIT)
+/**The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Gabriele Marcomin
+ * Copyright (c) 2015 Riccardo Cardin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,51 +26,30 @@
  * @version 1.0
  * @since 1.0
  */
-package it.unipd.math.pcd.actors.mailbox;
+package it.unipd.math.pcd.actors;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import it.unipd.math.pcd.actors.Actor;
-import it.unipd.math.pcd.actors.Message;
-
-public class LooperMailBox<T extends Message> implements Runnable {
-	private Actor<T> actor;
-	private MailBox<T> mailbox;
-	private AtomicBoolean stop = new AtomicBoolean(false);
-	public LooperMailBox(Actor<T> actor,MailBox<T> mailbox) {
-		this.actor=actor;
-		this.mailbox=mailbox;
+public class BaseActorRef<T extends Message> implements ActorRef<T> {
+	
+	private ActorSystem system;
+	
+	public BaseActorRef(ActorSystem system) {
+		this.system = system;
 	}
+	
+	
 	@Override
-	public void run() {
-		while(!stop.get()){
-			//reference of the next elaborated message
-			T tmp=null;
-			synchronized (mailbox) {
-				if(mailbox.isEmpty())
-					try {
-						wait();
-					} 
-					catch (InterruptedException e) {
-						stop.set(true);
-						e.printStackTrace();
-					}
-				else{
-					//get the reference of the top
-					tmp = mailbox.remove();
-				}
-			}
-			//signal the actor for the elaboration
-			actor.receive(tmp);
-			try {
-				Thread.sleep(280);
-			} 
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+	public void send(T message, ActorRef to) {
+		Actor<?> actor = system.getActor(to);
+		ActorRef sender = (ActorRef) this;
+		//actor.addMessage(message, sender);
+		
 	}
-	public void stop(){
-		stop.set(true);
+
+
+	@Override
+	public int compareTo(ActorRef arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
+
 }

@@ -37,10 +37,8 @@
  */
 package it.unipd.math.pcd.actors;
 
-import it.unipd.math.pcd.actors.decisions.MessageReceiver;
-import it.unipd.math.pcd.actors.mailbox.LooperMailBox;
-import it.unipd.math.pcd.actors.mailbox.MailBox;
-import it.unipd.math.pcd.actors.mailbox.MailBoxQueue;
+
+import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
 
 
 /**
@@ -51,10 +49,6 @@ import it.unipd.math.pcd.actors.mailbox.MailBoxQueue;
  * @since 1.0
  */
 public abstract class AbsActor<T extends Message> implements Actor<T>{
-	/**
-	 * reference of mailbox
-	 */
-	private MailBox<T> mailBox;
     /**
      * Self-reference of the actor
      */
@@ -64,11 +58,13 @@ public abstract class AbsActor<T extends Message> implements Actor<T>{
      * Sender of the current message
      */
     protected ActorRef<T> sender;
-    private MessageReceiver receiver;
+    /**
+     *	the manager of the messages
+     */
+    private MailBoxManager<T> receiver;
     public AbsActor(){
-    	mailBox = new MailBoxQueue<T>();
-    	LooperMailBox<T> looper = new LooperMailBox<>(this, mailBox);
-    	Thread lp = new Thread(looper);
+    	receiver= new MailBoxManager<T>(this);
+    	Thread lp = new Thread(receiver);
     	lp.start();
     }
     /**
@@ -84,6 +80,6 @@ public abstract class AbsActor<T extends Message> implements Actor<T>{
     
     public void addMessage(T message,ActorRef<T> sender){
     	this.sender = sender;
-    	mailBox.addMessage(message);
+    	receiver.storeMessage(message);
     }
 }

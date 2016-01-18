@@ -29,37 +29,62 @@
  */
 package it.unipd.math.pcd.actors.mailbox;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import it.unipd.math.pcd.actors.Actor;
 import it.unipd.math.pcd.actors.Message;
-import java.util.LinkedList;
-import java.util.Queue;
 
-/**
- * A thread-safe implementation of @link{MailBoxQueue}
- *
- * @author Gabriele Marcomin
- * @version 1.0
- * @since 1.0
- */
-public class MailBoxQueue<T extends Message> implements MailBox<T>{
-	private Queue<T> queue;
-	public MailBoxQueue(){
-		queue = new LinkedList<T>();
+public class MailBoxManager<T extends Message> implements Runnable {
+	private Actor<T> actor;
+	private MailBox<T> mailbox;
+	private AtomicBoolean stop = new AtomicBoolean(false);
+	public MailBoxManager(Actor<T> actor) {
+		this.actor=actor;
+		mailbox=new MailBoxQueue<T>();
 	}
 	@Override
-	public synchronized boolean addMessage(T message){
-		return queue.add(message);
+	public void run() {
+		while(!stop.get() && !mailbox.isEmpty()){
+			//reference of the next elaborated message
+			T tmp=null;
+			synchronized (mailbox) {
+				if(mailbox.isEmpty())
+					try {
+						wait();
+					} 
+					catch (InterruptedException e) {
+						stop.set(true);
+						e.printStackTrace();
+					}
+				else{
+					//get the reference of the top
+					tmp = mailbox.remove();
+				}
+			}
+			//signal the actor for the elaboration
+			actor.receive(tmp);
+			try {
+				Thread.sleep(280);
+			} 
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-	@Override
-	public synchronized boolean isEmpty(){
-		return queue.isEmpty();
+	
+	public boolean storeMessage(T message){
+		boolean isSalved=false;
+		synchronized (stop) {
+			if(!stop.get()){
+				isSalved=true;
+				mailbox.addMessage(message);
+			}
+		}
+		return isSalved;
+		
 	}
-	@Override
-	public T element() {
-		return queue.element();
+	
+	public void stop(){
+		stop.set(true);
 	}
-	@Override
-	public T remove() {
-		return queue.remove();
-	}
-
 }

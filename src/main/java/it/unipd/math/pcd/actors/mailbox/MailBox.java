@@ -32,7 +32,7 @@ package it.unipd.math.pcd.actors.mailbox;
 import it.unipd.math.pcd.actors.Message;
 
 /**
- * The mailbox of an actor, with purpouse to queue sended messages by others actors
+ * The mailbox of an actor, with purpose to queue sended messages by others actors
  * 
  */
 	 
