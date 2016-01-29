@@ -48,7 +48,7 @@ import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
  * @version 1.0
  * @since 1.0
  */
-public abstract class AbsActor<T extends Message> implements Actor<T>{
+public abstract class AbsActor<T extends Message> implements Actor<T>, ActionActor<T>{
     /**
      * Self-reference of the actor
      */
@@ -78,8 +78,16 @@ public abstract class AbsActor<T extends Message> implements Actor<T>{
         return this;
     }
     
-    public void addMessage(T message,ActorRef<T> sender){
-    	this.sender = sender;
-    	receiver.storeMessage(message);
+    @Override
+    public void addMessage(T message, ActorRef<T> sender) {
+    	this.sender=sender;
+    	boolean added = receiver.storeMessage(message);
+    	
+    }
+    
+    @Override
+    public void stop(){
+    	receiver.stop();
+    	
     }
 }

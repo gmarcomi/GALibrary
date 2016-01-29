@@ -44,7 +44,11 @@ public class MailBoxManager<T extends Message> implements Runnable {
 	}
 	@Override
 	public void run() {
-		while(!stop.get() && !mailbox.isEmpty()){
+		/*
+		 * if the mailbos is stopped, the execution runs until the last
+		 * message is processed.
+		 */
+		while(!stop.get() || !mailbox.isEmpty()){
 			//reference of the next elaborated message
 			T tmp=null;
 			synchronized (mailbox) {
