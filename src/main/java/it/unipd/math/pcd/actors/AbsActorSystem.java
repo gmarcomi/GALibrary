@@ -21,24 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- * Please, insert description here.
- * 
- * @author Gabriele Marcomin
- * @version 1.1
- * @since 1.0
- * 
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
  */
 package it.unipd.math.pcd.actors;
 
 import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * A map-based implementation of the actor system.
+ * @author Gabriele Marcomin
+ * @author Riccardo Cardin
+ * @version 1.1
+ * @since 1.0
  *
  */
 public abstract class AbsActorSystem implements ActorSystem {
@@ -46,12 +42,11 @@ public abstract class AbsActorSystem implements ActorSystem {
     /**
      * Associates every Actor created with an identifier.
      */
-    private Map<ActorRef<?>, Actor<?>> actors;
+    private Map<ActorRef<? extends Message>, Actor<? extends Message>> actors;
 
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {
-
-        // ActorRef instance
+    	// ActorRef instance
         ActorRef<?> reference;
         try {
             // Create the reference to the actor
@@ -60,8 +55,8 @@ public abstract class AbsActorSystem implements ActorSystem {
             Actor actorInstance = ((AbsActor) actor.newInstance()).setSelf(reference);
             // Associate the reference to the actor
             actors.put(reference, actorInstance);
-
-        } catch (InstantiationException | IllegalAccessException e) {
+        } 
+        catch (InstantiationException | IllegalAccessException e) {
             throw new NoSuchActorException(e);
         }
         return reference;
@@ -75,7 +70,21 @@ public abstract class AbsActorSystem implements ActorSystem {
     protected abstract ActorRef createActorReference(ActorMode mode);
     
     @Override
-    public Actor<? extends Message> getActor(ActorRef<? extends Message> actorRef){
-		return actors.get(actorRef);
+    public void stop(ActorRef<?> actor){
+    	AbsActor<?> stoppedActor = (AbsActor<?>) actors.get(actor);
+    	stoppedActor.stop();
+    	/* the MainBoxManager thread of stoppedActor keeps the reference of his owner Actor,
+    	 * until its death
+    	 */
+    	actors.remove(actor);
     }
+    
+    @Override
+    public void stop() {
+    	for (Entry<ActorRef<?>, Actor<?>> entry : actors.entrySet()){
+    		ActorRef<?> actorRef = entry.getKey();
+    	    stop(actorRef);
+    	}
+    	
+	}
 }

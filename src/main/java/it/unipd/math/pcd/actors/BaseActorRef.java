@@ -1,6 +1,6 @@
 /**The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Riccardo Cardin
+ * Copyright (c) 2015 Gabriele Marcomin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- * Please, insert description here.
  *
  * @author Gabriele Marcomin
  * @version 1.0
@@ -39,7 +38,7 @@ public class BaseActorRef<T extends Message> implements ActorRef<T> {
 	
 	@Override
 	public void send(T message, ActorRef to) {
-		Actor<?> actor = system.getActor(to);
+		//Actor<?> actor = system.getActor(to);
 		ActorRef sender = (ActorRef) this;
 		//actor.addMessage(message, sender);
 		

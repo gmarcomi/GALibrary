@@ -1,7 +1,6 @@
-/**
- * The MIT License (MIT)
+/**The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Riccardo Cardin
+ * Copyright (c) 2015 Gabriele Marcomin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,43 +20,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- * Please, insert description here.
  *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
  */
-
+package it.unipd.math.pcd.actors;
 /**
- * Please, insert description here.
+ * 
+ * @author Gabriele Marcomin
+ * @version 1.1
+ * @since 1.1
+ * 
+ * An implementation of{@code AbsActorSystem}
  *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
  */
-package it.unipd.math.pcd.actors.utils.actors;
 
-import it.unipd.math.pcd.actors.AbsActor;
-import it.unipd.math.pcd.actors.utils.messages.StoreMessage;
+public class BaseActorSystem extends AbsActorSystem {
+	
+	@Override
+	protected ActorRef createActorReference(ActorMode mode) {
+		ActorRef result = null;
+		if(mode.equals(ActorMode.LOCAL)){
+			result = new BaseActorRef<>(this);
+		}
+		return result;
+	}
 
-/**
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-public class StoreActor extends AbsActor<StoreMessage> {
-
-    private String data;
-
-    @Override
-    public void receive(StoreMessage message) {
-        this.data = message.getPayload();
-    }
-
-    public String getData() {
-        return data;
-    }
-    
 }

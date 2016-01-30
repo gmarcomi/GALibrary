@@ -21,11 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- * Please, insert description here.
- *
- * @author Gabriele Marcomin
- * @version 1.0
- * @since 1.0
  */
 package it.unipd.math.pcd.actors.mailbox;
 

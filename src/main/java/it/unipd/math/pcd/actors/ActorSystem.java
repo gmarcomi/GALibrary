@@ -21,16 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-
-/**
- * Please, insert description here.
- *
+ * 
  * @author Riccardo Cardin
  * @version 1.0
  * @since 1.0
@@ -43,10 +34,6 @@ package it.unipd.math.pcd.actors;
  *     <li>Create a new instance of an actor</li>
  *     <li>Stopping an actor</li>
  * </ul>
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
  */
 public interface ActorSystem {
 
@@ -67,14 +54,6 @@ public interface ActorSystem {
      * @return A reference to the actor
      */
     ActorRef<? extends Message> actorOf(Class<? extends Actor> actor);
-    
-    /**
-     * return the corresponding actor of {@code actor reference} that executes locally.
-     *
-     * @param actor The type of actor that has to be created
-     * @return the corresponding actor
-     */
-    Actor<? extends Message> getActor(ActorRef<? extends Message> actorRef);
 
     /**
      * Stops {@code actor}.

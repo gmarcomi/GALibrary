@@ -21,11 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- * Please, insert description here.
- *
- * @author Gabriele Marcomin
- * @version 1.0
- * @since 1.0
  */
 package it.unipd.math.pcd.actors.mailbox;
 
@@ -33,6 +28,10 @@ import it.unipd.math.pcd.actors.Message;
 
 /**
  * The mailbox of an actor, with purpose to queue sended messages by others actors
+ * 
+ * @author Gabriele Marcomin
+ * @version 1.1
+ * @since 1.1
  * 
  */
 	 

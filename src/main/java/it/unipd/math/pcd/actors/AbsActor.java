@@ -21,45 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-
-/**
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
  */
 package it.unipd.math.pcd.actors;
 
 
 import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
-
-
 /**
  * Defines common properties of all actors.
- *
+ * 
+ * @author Gabriele Marcomin
  * @author Riccardo Cardin
- * @version 1.0
+ * @version 1.1
  * @since 1.0
+ * 
  */
 public abstract class AbsActor<T extends Message> implements Actor<T>, ActionActor<T>{
     /**
      * Self-reference of the actor
      */
     protected ActorRef<T> self;
-
     /**
      * Sender of the current message
      */
     protected ActorRef<T> sender;
     /**
-     *	the manager of the messages
+     * The manager of the messages
      */
     private MailBoxManager<T> receiver;
     public AbsActor(){
@@ -68,7 +54,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>, ActionAct
     	lp.start();
     }
     /**
-     * Sets the self-referece.
+     * Sets the self-reference.
      *
      * @param self The reference to itself
      * @return The actor.
@@ -81,7 +67,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>, ActionAct
     @Override
     public void addMessage(T message, ActorRef<T> sender) {
     	this.sender=sender;
-    	boolean added = receiver.storeMessage(message);
+    	receiver.storeMessage(message);
     	
     }
     

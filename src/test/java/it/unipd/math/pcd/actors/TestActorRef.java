@@ -60,7 +60,8 @@ public class TestActorRef<T extends Message> implements ActorRef<T> {
      * @return An actor
      */
     public Actor<T> getUnderlyingActor(ActorSystem system) {
-        return (Actor<T>) system.getActor(reference);
+    	AbsActorSystem base = (AbsActorSystem)system;
+        return null;
     }
 
     @Override
