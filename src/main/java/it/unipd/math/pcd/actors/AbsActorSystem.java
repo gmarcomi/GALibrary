@@ -26,6 +26,7 @@ package it.unipd.math.pcd.actors;
 
 import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -33,7 +34,7 @@ import java.util.Map.Entry;
  * A map-based implementation of the actor system.
  * @author Gabriele Marcomin
  * @author Riccardo Cardin
- * @version 1.1
+ * @version 1.2
  * @since 1.0
  *
  */
@@ -43,7 +44,9 @@ public abstract class AbsActorSystem implements ActorSystem {
      * Associates every Actor created with an identifier.
      */
     private Map<ActorRef<? extends Message>, Actor<? extends Message>> actors;
-
+    public AbsActorSystem() {
+		actors = new HashMap<ActorRef<? extends Message>, Actor<? extends Message>>();
+	}
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {
     	// ActorRef instance
@@ -75,7 +78,11 @@ public abstract class AbsActorSystem implements ActorSystem {
     	synchronized (actors) {
     		stoppedActor = (AbsActor) actors.get(actor);
 		}
-    	stoppedActor.stop();
+    	if(stoppedActor != null)
+    		stoppedActor.stop();
+    	else
+    		throw new NoSuchActorException();
+    		
     	/* the MainBoxManager thread of stoppedActor keeps the reference of his owner Actor,
     	 * until its death
     	 */

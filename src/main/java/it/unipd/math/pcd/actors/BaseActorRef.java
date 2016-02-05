@@ -27,8 +27,8 @@ package it.unipd.math.pcd.actors;
 /**
  * 
  * @author Gabriele Marcomin
- * @version 1.0
- * @since 1.0
+ * @version 1.2
+ * @since 1.1
  *
  */
 public class BaseActorRef<T extends Message> implements ActorRef<T> {
@@ -47,8 +47,10 @@ public class BaseActorRef<T extends Message> implements ActorRef<T> {
 
 	@Override
 	public int compareTo(ActorRef arg0) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result=0;
+		if(this == arg0)
+			result=1;
+		return result;
 	}
 
 }

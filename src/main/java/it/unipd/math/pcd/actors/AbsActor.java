@@ -74,9 +74,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>, ActionAct
     @Override
     public void addMessage(T message, ActorRef<T> sender) {
     	this.sender=sender;
-    	System.out.println("Messaggio inviato da" + sender.toString());
     	receiver.addNewMail(message);
-    	System.out.println("Messaggio ricevuto correttamente");
     }
     
     @Override

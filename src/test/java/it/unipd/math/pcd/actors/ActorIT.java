@@ -91,7 +91,6 @@ public class ActorIT {
 
         PingPongActor pingActor = (PingPongActor) pingRef.getUnderlyingActor(system);
         PingPongActor pongActor = (PingPongActor) pongRef.getUnderlyingActor(system);
-
         Assert.assertEquals("A ping actor has received a ping message", "Ping",
                 pingActor.getLastMessage().getMessage());
         Assert.assertEquals("A pong actor has received back a pong message", "Pong",
@@ -106,8 +105,7 @@ public class ActorIT {
             adder.send(new Increment(), counter);
         }
 
-        Thread.sleep(2000);
-
+        Thread.sleep(18000);
         Assert.assertEquals("A counter that was incremented 1000 times should be equal to 1000",
                 200, ((CounterActor) counter.getUnderlyingActor(system)).getCounter());
     }

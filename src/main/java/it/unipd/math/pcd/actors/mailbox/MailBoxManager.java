@@ -27,7 +27,16 @@ package it.unipd.math.pcd.actors.mailbox;
 import it.unipd.math.pcd.actors.Actor;
 import it.unipd.math.pcd.actors.Message;
 import it.unipd.math.pcd.actors.mailbox.Mail.State;
-
+/**
+ * The manager of mailbox, who can add message, elaborate messages and stop 
+ * the processing
+ * 
+ * @author Gabriele Marcomin
+ * @author Riccardo Cardin
+ * @version 1.2
+ * @since 1.1
+ * 
+ */
 public class MailBoxManager<T extends Message> implements Runnable {
 	private Actor actor;
 	private MailBoxQueue mailbox;
@@ -49,7 +58,7 @@ public class MailBoxManager<T extends Message> implements Runnable {
 			synchronized (mailbox) {
 				if(mailbox.isEmpty())
 					try {
-						wait();
+						mailbox.wait();
 					} 
 					catch (InterruptedException e) {
 						stop=true;
@@ -58,8 +67,10 @@ public class MailBoxManager<T extends Message> implements Runnable {
 				else{
 					//get the reference of the top
 					Mail mail = mailbox.remove();
-					if(mail.getState() == State.STOP)
+					if(mail.getState() == State.STOP){
 						stop=true;
+						System.out.println("Messaggio stop");
+					}
 					else
 						message = mail.getMessage();
 				}
@@ -68,31 +79,30 @@ public class MailBoxManager<T extends Message> implements Runnable {
 			if(message != null)
 				actor.receive(message);
 			try {
-				Thread.sleep(280);
+				Thread.sleep(80);
 			} 
 			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 		while(!mailbox.isEmpty()){
-			//reference of the next elaborated message
-			Message message=null;
-			synchronized (mailbox) {
-				//get the reference of the top
-				Mail mail = mailbox.remove();
-				message = mail.getMessage();
-			}
-			//signal the actor for the elaboration
-			if(message != null)
-				actor.receive(message);
+			//not other thread can access to mailbox
+			Mail mail = mailbox.remove();
+			Message message = mail.getMessage();
+			actor.receive(message);
 			try {
-				Thread.sleep(120);
+				Thread.sleep(40);
 			} 
 			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	/**
+	 * Add a new message to mailbox
+	 * @param message The message
+	 * @return The result of operation
+	 */
 	public boolean addNewMail(T message){
 		if(stop == true);
 		else{
@@ -100,6 +110,9 @@ public class MailBoxManager<T extends Message> implements Runnable {
 		}
 		return false;
 	}
+	/**
+	 * Stop the mailbox
+	 */
 	public void stop(){
 		mailbox.addMessage(new StopMail());
 	}

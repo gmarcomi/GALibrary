@@ -37,8 +37,8 @@ import java.util.Queue;
  * A thread-safe implementation of @link{MailBoxQueue}
  *
  * @author Gabriele Marcomin
- * @version 1.0
- * @since 1.0
+ * @version 1.2
+ * @since 1.1
  */
 public class MailBoxQueue implements MailBox{
 	private Queue<Mail> queue;
@@ -51,7 +51,9 @@ public class MailBoxQueue implements MailBox{
 	}
 	@Override
 	public synchronized boolean addMessage(Mail message) {
-		return queue.add(message);
+		boolean resultOperation = queue.add(message);
+		notifyAll();
+		return resultOperation;
 	}
 	@Override
 	public synchronized Mail element() {
