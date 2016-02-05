@@ -1,4 +1,5 @@
-/**The MIT License (MIT)
+/**
+ * The MIT License (MIT)
  * <p/>
  * Copyright (c) 2015 Gabriele Marcomin
  * <p/>
@@ -20,28 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- *
  */
-package it.unipd.math.pcd.actors;
+package it.unipd.math.pcd.actors.mailbox;
+
+import it.unipd.math.pcd.actors.Message;
 /**
- * 
+ * An implementation of Message which represents the stop command to receiver
  * @author Gabriele Marcomin
  * @version 1.1
  * @since 1.1
- * 
- * An implementation of{@code AbsActorSystem}
- *
  */
-
-public class BaseActorSystem extends AbsActorSystem {
-	
+public class StopMail implements Mail<Message> {
 	@Override
-	protected ActorRef createActorReference(ActorMode mode) {
-		ActorRef result = null;
-		if(mode == ActorMode.LOCAL){
-			result = new BaseActorRef<>(this);
-		}
-		return result;
+	public Message getMessage() {
+		return null;
 	}
 
+	@Override
+	public State getState() {
+		return Mail.State.STOP;
+	}
 }

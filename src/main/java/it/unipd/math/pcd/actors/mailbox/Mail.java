@@ -1,4 +1,5 @@
-/**The MIT License (MIT)
+/**
+ * The MIT License (MIT)
  * <p/>
  * Copyright (c) 2015 Gabriele Marcomin
  * <p/>
@@ -20,28 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- *
  */
-package it.unipd.math.pcd.actors;
+package it.unipd.math.pcd.actors.mailbox;
+
+import it.unipd.math.pcd.actors.Message;
 /**
+ * The mail in the MailBox
  * 
  * @author Gabriele Marcomin
  * @version 1.1
  * @since 1.1
  * 
- * An implementation of{@code AbsActorSystem}
- *
  */
-
-public class BaseActorSystem extends AbsActorSystem {
-	
-	@Override
-	protected ActorRef createActorReference(ActorMode mode) {
-		ActorRef result = null;
-		if(mode == ActorMode.LOCAL){
-			result = new BaseActorRef<>(this);
-		}
-		return result;
-	}
+public interface Mail<T extends Message> {
+	/**
+	 * Provides the content of a Mail
+	 * @return the content of mail
+	 */
+	T getMessage();
+	/**
+	 * Provides the type of mail
+	 * @return the {@code state} value of the mail's state
+	 */
+	State getState();
+	enum State {
+        CONTINUE,
+        PAUSE,
+        STOP
+    }
 
 }

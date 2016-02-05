@@ -24,44 +24,49 @@
  */
 package it.unipd.math.pcd.actors.mailbox;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import it.unipd.math.pcd.actors.Actor;
 import it.unipd.math.pcd.actors.Message;
+import it.unipd.math.pcd.actors.mailbox.Mail.State;
 
 public class MailBoxManager<T extends Message> implements Runnable {
-	private Actor<T> actor;
-	private MailBox<T> mailbox;
-	private AtomicBoolean stop = new AtomicBoolean(false);
-	public MailBoxManager(Actor<T> actor) {
+	private Actor actor;
+	private MailBoxQueue mailbox;
+	private boolean stop;
+	public MailBoxManager(Actor actor) {
 		this.actor=actor;
-		mailbox=new MailBoxQueue<T>();
+		mailbox=new MailBoxQueue();
+		stop=false;
 	}
 	@Override
 	public void run() {
 		/*
-		 * if the mailbos is stopped, the execution runs until the last
+		 * if the mailbox is stopped, the execution runs until the last
 		 * message is processed.
 		 */
-		while(!stop.get() || !mailbox.isEmpty()){
+		while(!stop){
 			//reference of the next elaborated message
-			T tmp=null;
+			Message message=null;
 			synchronized (mailbox) {
 				if(mailbox.isEmpty())
 					try {
 						wait();
 					} 
 					catch (InterruptedException e) {
-						stop.set(true);
+						stop=true;
 						e.printStackTrace();
 					}
 				else{
 					//get the reference of the top
-					tmp = mailbox.remove();
+					Mail mail = mailbox.remove();
+					if(mail.getState() == State.STOP)
+						stop=true;
+					else
+						message = mail.getMessage();
 				}
 			}
 			//signal the actor for the elaboration
-			actor.receive(tmp);
+			if(message != null)
+				actor.receive(message);
 			try {
 				Thread.sleep(280);
 			} 
@@ -69,21 +74,33 @@ public class MailBoxManager<T extends Message> implements Runnable {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public boolean storeMessage(T message){
-		boolean isSalved=false;
-		synchronized (stop) {
-			if(!stop.get()){
-				isSalved=true;
-				mailbox.addMessage(message);
+		while(!mailbox.isEmpty()){
+			//reference of the next elaborated message
+			Message message=null;
+			synchronized (mailbox) {
+				//get the reference of the top
+				Mail mail = mailbox.remove();
+				message = mail.getMessage();
+			}
+			//signal the actor for the elaboration
+			if(message != null)
+				actor.receive(message);
+			try {
+				Thread.sleep(120);
+			} 
+			catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
-		return isSalved;
-		
 	}
-	
+	public boolean addNewMail(T message){
+		if(stop == true);
+		else{
+			mailbox.addMessage(new BaseMail(message));
+		}
+		return false;
+	}
 	public void stop(){
-		stop.set(true);
+		mailbox.addMessage(new StopMail());
 	}
 }

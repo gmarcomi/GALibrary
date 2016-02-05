@@ -40,25 +40,25 @@ import java.util.Queue;
  * @version 1.0
  * @since 1.0
  */
-public class MailBoxQueue<T extends Message> implements MailBox<T>{
-	private Queue<T> queue;
+public class MailBoxQueue implements MailBox{
+	private Queue<Mail> queue;
 	public MailBoxQueue(){
-		queue = new LinkedList<T>();
-	}
-	@Override
-	public synchronized boolean addMessage(T message){
-		return queue.add(message);
+		queue = new LinkedList<Mail>();
 	}
 	@Override
 	public synchronized boolean isEmpty(){
 		return queue.isEmpty();
 	}
 	@Override
-	public T element() {
+	public synchronized boolean addMessage(Mail message) {
+		return queue.add(message);
+	}
+	@Override
+	public synchronized Mail element() {
 		return queue.element();
 	}
 	@Override
-	public T remove() {
+	public synchronized Mail remove() {
 		return queue.remove();
 	}
 

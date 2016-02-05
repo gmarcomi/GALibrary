@@ -1,6 +1,6 @@
 /**The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Gabriele Marcomin
+ * Copyright (c) 2016 Gabriele Marcomin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,29 +21,29 @@
  * SOFTWARE.
  * <p/>
  *
+ * 
+ */
+package it.unipd.math.pcd.actors;
+/**
+ * 
  * @author Gabriele Marcomin
  * @version 1.0
  * @since 1.0
+ *
  */
-package it.unipd.math.pcd.actors;
-
 public class BaseActorRef<T extends Message> implements ActorRef<T> {
 	
-	private ActorSystem system;
+	private AbsActorSystem system;
 	
-	public BaseActorRef(ActorSystem system) {
+	public BaseActorRef(AbsActorSystem system) {
 		this.system = system;
 	}
 	
-	
 	@Override
 	public void send(T message, ActorRef to) {
-		//Actor<?> actor = system.getActor(to);
-		ActorRef sender = (ActorRef) this;
-		//actor.addMessage(message, sender);
-		
+		AbsActor<T> actor = (AbsActor<T>) system.getActor(to);
+		actor.addMessage(message, (ActorRef)this);
 	}
-
 
 	@Override
 	public int compareTo(ActorRef arg0) {

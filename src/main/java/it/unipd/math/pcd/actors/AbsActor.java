@@ -25,7 +25,10 @@
 package it.unipd.math.pcd.actors;
 
 
+import it.unipd.math.pcd.actors.mailbox.BaseMail;
+import it.unipd.math.pcd.actors.mailbox.MailBox;
 import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
+import it.unipd.math.pcd.actors.mailbox.MailBoxQueue;
 /**
  * Defines common properties of all actors.
  * 
@@ -44,6 +47,10 @@ public abstract class AbsActor<T extends Message> implements Actor<T>, ActionAct
      * Sender of the current message
      */
     protected ActorRef<T> sender;
+    /**
+     * The mailbox of the actor
+     */
+    private MailBox mailbox;
     /**
      * The manager of the messages
      */
@@ -67,13 +74,13 @@ public abstract class AbsActor<T extends Message> implements Actor<T>, ActionAct
     @Override
     public void addMessage(T message, ActorRef<T> sender) {
     	this.sender=sender;
-    	receiver.storeMessage(message);
-    	
+    	System.out.println("Messaggio inviato da" + sender.toString());
+    	receiver.addNewMail(message);
+    	System.out.println("Messaggio ricevuto correttamente");
     }
     
     @Override
     public void stop(){
     	receiver.stop();
-    	
     }
 }

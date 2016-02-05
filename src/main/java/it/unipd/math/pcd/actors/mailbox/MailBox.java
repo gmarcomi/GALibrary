@@ -24,8 +24,6 @@
  */
 package it.unipd.math.pcd.actors.mailbox;
 
-import it.unipd.math.pcd.actors.Message;
-
 /**
  * The mailbox of an actor, with purpose to queue sended messages by others actors
  * 
@@ -34,10 +32,31 @@ import it.unipd.math.pcd.actors.Message;
  * @since 1.1
  * 
  */
-	 
-public interface MailBox<T extends Message> {
-	public boolean addMessage(T message);
+public interface MailBox {
+	/**
+     * Add a message to MailBox
+     *
+     * @param message The message to add
+     * @return The result of the operation
+     */
+	public boolean addMessage(Mail message);
+	/**
+     * Test if the MailBox is empty or not
+     *
+     * @param message The message to add
+     * @return True if the 
+     */
 	public boolean isEmpty();
-	public T element();
-	public T remove();
+	/**
+     * Provide the first message of MailBox
+     *
+     * @return the first message
+     */
+	public Mail element();
+	/**
+     * Remove the first message of MailBox
+     *
+     * @return the removed first message
+     */
+	public Mail remove();
 }

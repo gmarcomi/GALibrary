@@ -71,20 +71,43 @@ public abstract class AbsActorSystem implements ActorSystem {
     
     @Override
     public void stop(ActorRef<?> actor){
-    	AbsActor<?> stoppedActor = (AbsActor<?>) actors.get(actor);
+    	AbsActor stoppedActor = null; 
+    	synchronized (actors) {
+    		stoppedActor = (AbsActor) actors.get(actor);
+		}
     	stoppedActor.stop();
     	/* the MainBoxManager thread of stoppedActor keeps the reference of his owner Actor,
     	 * until its death
     	 */
-    	actors.remove(actor);
+    	synchronized (actors) {
+    		actors.remove(actor);
+		}
     }
     
     @Override
     public void stop() {
-    	for (Entry<ActorRef<?>, Actor<?>> entry : actors.entrySet()){
-    		ActorRef<?> actorRef = entry.getKey();
-    	    stop(actorRef);
-    	}
+    	//other operation aren't allowed on actors
+    	synchronized (actors) {
+    		for (Entry<ActorRef<?>, Actor<?>> entry : actors.entrySet()){
+        		ActorRef<?> actorRef = entry.getKey();
+        	    stop(actorRef);
+        	}
+		}
     	
-	}
+    }
+    /**
+     * Retrieves the corresponding Actor of {@code ref}}
+     * @param ref The reference of ActorRef
+     * @return The corresponding Actor
+     */
+    public Actor<? extends Message> getActor(ActorRef ref){
+    	Actor tmp=null;
+    	//one access to map at time
+    	synchronized (actors) {
+			tmp=actors.get(ref);
+		}
+    	if(tmp == null)
+    		throw new NoSuchActorException();
+    	return tmp;
+    }
 }
