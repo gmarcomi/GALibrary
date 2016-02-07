@@ -26,6 +26,7 @@
  * @version 1.0
  * @since 1.0
  */
+
 package it.unipd.math.pcd.actors;
 
 /**
@@ -60,19 +61,19 @@ public interface ActorSystem {
      *
      * @param actor The actor to be stopped
      */
-    void stop(ActorRef<?> actor);
+  void stop(ActorRef<?> actor);
 
-    /**
-     * Stops all actors of the system.
-     */
-    void stop();
+  /**
+  * Stops all actors of the system.
+  */
+  void stop();
 
     /**
      * Possible modes to create an actor. {@code LOCALE} mode is used to create an actor
      * that acts in the local system. {@code REMOTE} mode is used to create remote actors.
      */
-    enum ActorMode {
-        LOCAL,
-        REMOTE
-    }
+  enum ActorMode {
+    LOCAL,
+    REMOTE
+  }
 }

@@ -23,24 +23,28 @@
  * <p/>
  * 
  * @author Gabriele Marcomin
- * @version 1.0
- * @since 1.0
+ * @version 1.1
+ * @since 1.1
  */
 package it.unipd.math.pcd.actors;
 /**
- * An actor in the <code>pcd-actor</code> system that can be stopped an
- * messages of a defined type.
+ * An actor who cans add, gets his state and stops itself
  */
 public interface ActionActor<T extends Message> {
 	/**
-     * Add a message to the actor
+     * Adds a message to the actor
      *
      * @param message The type of messages the actor can receive
      * @param sender The sender's ActorRef of the message
      */
-	void addMessage(T message,ActorRef<T> sender);
+	boolean addMessage(T message,ActorRef<T> sender);
 	/**
-     * Stop the actor
+	 * Gets the state of actor
+	 * @return true if actor is interrupted
+	 */
+	boolean getInterrupted();
+	/**
+     * Stops the actor
      */
 	void stop();
 }

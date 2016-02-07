@@ -24,17 +24,13 @@
  */
 package it.unipd.math.pcd.actors;
 
-
-import it.unipd.math.pcd.actors.mailbox.BaseMail;
-import it.unipd.math.pcd.actors.mailbox.MailBox;
 import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
-import it.unipd.math.pcd.actors.mailbox.MailBoxQueue;
 /**
  * Defines common properties of all actors.
  * 
  * @author Gabriele Marcomin
  * @author Riccardo Cardin
- * @version 1.1
+ * @version 1.2
  * @since 1.0
  * 
  */
@@ -47,18 +43,13 @@ public abstract class AbsActor<T extends Message> implements Actor<T>, ActionAct
      * Sender of the current message
      */
     protected ActorRef<T> sender;
-    /**
-     * The mailbox of the actor
-     */
-    private MailBox mailbox;
-    /**
-     * The manager of the messages
-     */
+    //the manager of the mail
     private MailBoxManager<T> receiver;
+    private Thread threadMB;
     public AbsActor(){
     	receiver= new MailBoxManager<T>(this);
-    	Thread lp = new Thread(receiver);
-    	lp.start();
+    	threadMB = new Thread(receiver);
+    	threadMB.start();
     }
     /**
      * Sets the self-reference.
@@ -67,14 +58,21 @@ public abstract class AbsActor<T extends Message> implements Actor<T>, ActionAct
      * @return The actor.
      */
     protected final Actor<T> setSelf(ActorRef<T> self) {
-        this.self = self;
+     this.self = self;
         return this;
     }
     
     @Override
-    public void addMessage(T message, ActorRef<T> sender) {
+    public boolean addMessage(T message, ActorRef<T> sender) {
     	this.sender=sender;
-    	receiver.addNewMail(message);
+    	if(threadMB.isInterrupted())
+    		return false;
+    	return receiver.addNewMail(message);
+    }
+    
+    @Override
+    public boolean getInterrupted() {
+    	return threadMB.isInterrupted();
     }
     
     @Override

@@ -23,13 +23,6 @@
  * <p/>
  */
 
-/**
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
 package it.unipd.math.pcd.actors;
 
 /**
@@ -42,12 +35,12 @@ package it.unipd.math.pcd.actors;
  */
 public interface Actor<T extends Message> {
 
-    /**
-     * Defines the interface of the actor.
-     *
-     * @param message The type of messages the actor can receive
-     * @throws it.unipd.math.pcd.actors.exceptions.UnsupportedMessageException If the message is not supported by
-     *         the actor.
-     */
-    void receive(T message);
+  /**
+  * Defines the interface of the actor.
+  *
+  * @param message The type of messages the actor can receive
+  * @throws actors.exceptions.UnsupportedMessageException If the message is not supported by
+  *         the actor.
+  */
+  void receive(T message);
 }

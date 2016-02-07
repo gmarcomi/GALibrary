@@ -22,6 +22,7 @@
  * SOFTWARE.
  * <p/>
  */
+
 package it.unipd.math.pcd.actors;
 
 /**
@@ -34,11 +35,11 @@ package it.unipd.math.pcd.actors;
  */
 public interface ActorRef<T extends Message> extends Comparable<ActorRef> {
 
-    /**
-     * Sends a {@code message} to another actor
-     *
-     * @param message The message to send
-     * @param to The actor to which sending the message
-     */
-    void send(T message, ActorRef to);
+  /**
+  * Sends a {@code message} to another actor.
+  *
+  * @param message The message to send
+  * @param to The actor to which sending the message
+  */
+  void send(T message, ActorRef to);
 }

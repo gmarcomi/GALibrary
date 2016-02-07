@@ -29,22 +29,18 @@
  */
 package it.unipd.math.pcd.actors.mailbox;
 
-import it.unipd.math.pcd.actors.Message;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * A thread-safe implementation of @link{MailBoxQueue}
+ * A thread-safe implementation of MailBoxQueue
  *
  * @author Gabriele Marcomin
  * @version 1.2
  * @since 1.1
  */
 public class MailBoxQueue implements MailBox{
-	private Queue<Mail> queue;
-	public MailBoxQueue(){
-		queue = new LinkedList<Mail>();
-	}
+	private Queue<Mail> queue= new LinkedList<Mail>();
 	@Override
 	public synchronized boolean isEmpty(){
 		return queue.isEmpty();

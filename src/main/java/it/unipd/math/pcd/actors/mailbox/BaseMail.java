@@ -14,11 +14,9 @@ import it.unipd.math.pcd.actors.Message;
  */
 public class BaseMail implements Mail<Message> {
 	private Message mail;
-	private State state;
+	private State state=State.CONTINUE;
 	public BaseMail(Message mail) {
 		this.mail=mail;
-		state = State.CONTINUE;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
