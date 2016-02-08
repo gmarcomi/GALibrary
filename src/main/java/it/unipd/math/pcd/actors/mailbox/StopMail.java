@@ -22,23 +22,27 @@
  * SOFTWARE.
  * <p/>
  */
+
 package it.unipd.math.pcd.actors.mailbox;
 
 import it.unipd.math.pcd.actors.Message;
+
 /**
  * An implementation of Message which represents the stop command to receiver
  * @author Gabriele Marcomin
  * @version 1.1
  * @since 1.1
  */
-public class StopMail implements Mail<Message> {
-	@Override
-	public Message getMessage() {
-		return null;
-	}
 
-	@Override
-	public State getState() {
-		return Mail.State.STOP;
-	}
+public class StopMail implements Mail<Message> {
+  
+  @Override
+  public Message getMessage() {
+    return null;
+  }
+
+  @Override
+  public State getState() {
+    return Mail.State.STOP;
+  }
 }

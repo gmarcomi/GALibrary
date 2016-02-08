@@ -27,6 +27,7 @@
  * @version 1.0
  * @since 1.0
  */
+
 package it.unipd.math.pcd.actors.mailbox;
 
 import java.util.LinkedList;
@@ -39,25 +40,28 @@ import java.util.Queue;
  * @version 1.2
  * @since 1.1
  */
-public class MailBoxQueue implements MailBox{
-	private Queue<Mail> queue= new LinkedList<Mail>();
-	@Override
-	public synchronized boolean isEmpty(){
-		return queue.isEmpty();
-	}
-	@Override
-	public synchronized boolean addMessage(Mail message) {
-		boolean resultOperation = queue.add(message);
-		notifyAll();
-		return resultOperation;
-	}
-	@Override
-	public synchronized Mail element() {
-		return queue.element();
-	}
-	@Override
-	public synchronized Mail remove() {
-		return queue.remove();
-	}
+public class MailBoxQueue implements MailBox {
+  private Queue<Mail> queue = new LinkedList<Mail>();
+  
+  @Override
+  public synchronized boolean isEmpty() {
+    return queue.isEmpty();
+  }
 
+  @Override
+  public synchronized boolean addMessage(Mail message) {
+    boolean resultOperation = queue.add(message);
+    notifyAll();
+    return resultOperation;
+  }
+
+  @Override
+  public synchronized Mail element() {
+    return queue.element();
+  }
+
+  @Override
+  public synchronized Mail remove() {
+    return queue.remove();
+  }
 }

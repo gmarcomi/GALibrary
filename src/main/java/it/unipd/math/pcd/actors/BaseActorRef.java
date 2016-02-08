@@ -23,34 +23,37 @@
  *
  * 
  */
+
 package it.unipd.math.pcd.actors;
 /**
- * 
+ * A base implementation of ActorRef
  * @author Gabriele Marcomin
  * @version 1.2
  * @since 1.1
  *
  */
-public class BaseActorRef<T extends Message> implements ActorRef<T> {
-	
-	private AbsActorSystem system;
-	
-	public BaseActorRef(AbsActorSystem system) {
-		this.system = system;
-	}
-	
-	@Override
-	public void send(T message, ActorRef to) {
-		AbsActor<T> actor = (AbsActor<T>) system.getActor(to);
-		actor.addMessage(message, (ActorRef)this);
-	}
 
-	@Override
-	public int compareTo(ActorRef arg0) {
-		int result=0;
-		if(this == arg0)
-			result=1;
-		return result;
-	}
+public class BaseActorRef<T extends Message> implements ActorRef<T> {
+
+  private ActorSystemCom system;
+  
+  /**
+  * The constructor of BaseActorRef.
+  * @param system The AbsActorSystem reference of the system 
+  */
+  public BaseActorRef(ActorSystemCom system) {
+    this.system = system;
+  }
+
+  @Override
+  public void send(T message, ActorRef to) {
+    AbsActor<T> actor = (AbsActor<T>) system.getActor(to);
+    actor.addMessage(message, (ActorRef)this);
+  }
+
+  @Override
+  public int compareTo(ActorRef arg0) {
+    return this.hashCode() - arg0.hashCode();
+  }
 
 }

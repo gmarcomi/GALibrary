@@ -26,10 +26,13 @@
 package it.unipd.math.pcd.actors;
 
 import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
+import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * A map-based implementation of the actor system.
@@ -39,11 +42,12 @@ import java.util.Map.Entry;
  * @since 1.0
  *
  */
-public abstract class AbsActorSystem implements ActorSystem {
-  /**
-  * Associates every Actor created with an identifier.
-  */
+public abstract class AbsActorSystem implements ActorSystem,ActorSystemCom {
+  
+  //Associates every Actor created with an identifier.
   private Map<ActorRef<? extends Message>, Actor<? extends Message>> actors;
+  //the pool of the actors' threads
+  private Executor managerPool = Executors.newFixedThreadPool(10);
     
   public AbsActorSystem() {
     actors = new HashMap<ActorRef<? extends Message>, Actor<? extends Message>>();
@@ -58,11 +62,13 @@ public abstract class AbsActorSystem implements ActorSystem {
       reference = this.createActorReference(mode);
       // Create the new instance of the actor 
       Actor actorInstance = ((AbsActor) actor.newInstance()).setSelf(reference);
+      AbsActor absRef = (AbsActor) actorInstance;
+      //add the manager task to the pool
+      managerPool.execute(absRef.getTaskRef());
       // Associate the reference to the actor
       actors.put(reference, actorInstance); 
-    }
-    catch (InstantiationException | IllegalAccessException e) {
-     throw new NoSuchActorException(e);
+    } catch (InstantiationException | IllegalAccessException e) {
+      throw new NoSuchActorException(e);
     }
     return reference;
   }
@@ -82,8 +88,7 @@ public abstract class AbsActorSystem implements ActorSystem {
     }
     if (stoppedActor != null) {
       stoppedActor.stop();
-    }
-    else {
+    } else {
       throw new NoSuchActorException();
     }
     /* the MainBoxManager thread of stoppedActor keeps the reference of his owner Actor,
@@ -94,40 +99,37 @@ public abstract class AbsActorSystem implements ActorSystem {
     }
   }
     
-    @Override
-    public void stop() {
-    	//other operation aren't allowed on actors
-    	synchronized (actors) {
-    		for (Entry<ActorRef<?>, Actor<?>> entry : actors.entrySet()){
-        		ActorRef<?> actorRef = entry.getKey();
-        	    stop(actorRef);
-        	}
-		}
-    	
+  @Override
+  public void stop() {
+    //other operation aren't allowed on actors
+    synchronized (actors) {
+      for (Entry<ActorRef<?>, Actor<?>> entry : actors.entrySet()) {
+        ActorRef<?> actorRef = entry.getKey();
+        stop(actorRef);
+      }
     }
-    /**
-     * Retrieves the corresponding Actor of {@code ref}
-     * @param ref The reference of ActorRef
-     * @return The corresponding Actor
-     */
-    public Actor<? extends Message> getActor(ActorRef ref){
-    	Actor<? extends Message> tmp=null;
-    	//one access to map at time
-    	synchronized (actors) {
-			tmp=actors.get(ref);
-		}
-    	//the searched ref don't exist, stopped or less
-    	if(tmp == null)
-    		throw new NoSuchActorException();
-    	else{
-    		//testing interrupted error
-    		AbsActor<? extends Message> temp = (AbsActor<? extends Message>) tmp;
-    		if(temp.getInterrupted()){
-    			//stop the interrupted actor and throw the exception
-    			stop(ref);
-    			throw new NoSuchActorException();
-    		}
-    	}
-    	return tmp;
+  }
+  
+  @Override
+  public Actor<? extends Message> getActor(ActorRef ref){
+    Actor<? extends Message> tmp = null;
+    //one access to map at time
+    synchronized (actors) {
+      tmp = actors.get(ref);
     }
+    //the searched ref don't exist, stopped or less
+    if (tmp == null) { 
+      throw new NoSuchActorException();
+    } else {
+      //testing interrupted error
+      AbsActor<? extends Message> temp = (AbsActor<? extends Message>) tmp;
+      if (temp.getInterrupted()) {
+        //stop the interrupted actor and throw the exception
+        stop(ref);
+        throw new NoSuchActorException();
+      }
+    }
+    return tmp;
+  }
+  
 }

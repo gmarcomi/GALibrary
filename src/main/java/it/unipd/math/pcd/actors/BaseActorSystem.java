@@ -22,27 +22,26 @@
  * <p/>
  *
  */
+
 package it.unipd.math.pcd.actors;
+
 /**
- * 
+ * An implementation of{@code AbsActorSystem}.
  * @author Gabriele Marcomin
  * @version 1.2
  * @since 1.1
- * 
- * An implementation of{@code AbsActorSystem}
- *
  */
 
 public class BaseActorSystem extends AbsActorSystem {
-	
-	@Override
-	protected ActorRef createActorReference(ActorMode mode) {
-		ActorRef result = null;
-		if(mode == ActorMode.LOCAL)
-			result = new BaseActorRef<>(this);
-		else
-			throw new IllegalArgumentException();
-		return result;
-	}
+  @Override
+  protected ActorRef createActorReference(ActorMode mode) {
+    ActorRef result = null;
+    if (mode == ActorMode.LOCAL) {
+      result = new BaseActorRef<>((ActorSystemCom)this);
+    } else {
+      throw new IllegalArgumentException();
+    }
+    return result;
+  }
 
 }

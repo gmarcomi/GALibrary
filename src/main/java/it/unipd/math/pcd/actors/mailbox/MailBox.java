@@ -22,6 +22,7 @@
  * SOFTWARE.
  * <p/>
  */
+
 package it.unipd.math.pcd.actors.mailbox;
 
 /**
@@ -33,30 +34,33 @@ package it.unipd.math.pcd.actors.mailbox;
  * 
  */
 public interface MailBox {
-	/**
-     * Add a message to MailBox
-     *
-     * @param message The message to add
-     * @return The result of the operation
-     */
-	public boolean addMessage(Mail message);
-	/**
-     * Test if the MailBox is empty or not
-     *
-     * @param message The message to add
-     * @return True if the 
-     */
-	public boolean isEmpty();
-	/**
-     * Provide the first message of MailBox
-     *
-     * @return the first message
-     */
-	public Mail element();
-	/**
-     * Remove the first message of MailBox
-     *
-     * @return the removed first message
-     */
-	public Mail remove();
+  /**
+  * Add a message to MailBox.
+  *
+  * @param message The message to add
+  * @return The result of the operation
+  */
+  public boolean addMessage(Mail message);
+  
+  /**
+  * Test if the MailBox is empty or not.
+  *
+  * @param message The message to add
+  * @return True if the 
+  */
+  public boolean isEmpty();
+  
+  /**
+  * Provide the first message of MailBox.
+  *
+  * @return the first message
+  */
+  public Mail element();
+
+  /**
+  * Remove the first message of MailBox.
+  *
+  * @return the removed first message
+  */
+  public Mail remove();
 }

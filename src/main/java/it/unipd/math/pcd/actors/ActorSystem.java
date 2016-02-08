@@ -37,30 +37,31 @@ package it.unipd.math.pcd.actors;
  * </ul>
  */
 public interface ActorSystem {
+  
+  /**
+  * Create an instance of {@code actor} returning a {@link ActorRef reference} 
+  * to it using the given {@code mode}.
+  *
+  * @param actor The type of actor that has to be created
+  * @param mode The mode of the actor requested
+  *
+  * @return A reference to the actor
+  */
+  ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode);
 
-    /**
-     * Create an instance of {@code actor} returning a {@link ActorRef reference} to it using the given {@code mode}.
-     *
-     * @param actor The type of actor that has to be created
-     * @param mode The mode of the actor requested
-     *
-     * @return A reference to the actor
-     */
-    ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode);
+  /**
+  * Create an instance of {@code actor} that executes locally.
+  *
+  * @param actor The type of actor that has to be created
+  * @return A reference to the actor
+  */
+  ActorRef<? extends Message> actorOf(Class<? extends Actor> actor);
 
-    /**
-     * Create an instance of {@code actor} that executes locally.
-     *
-     * @param actor The type of actor that has to be created
-     * @return A reference to the actor
-     */
-    ActorRef<? extends Message> actorOf(Class<? extends Actor> actor);
-
-    /**
-     * Stops {@code actor}.
-     *
-     * @param actor The actor to be stopped
-     */
+  /**
+  * Stops {@code actor}.
+  *
+  * @param actor The actor to be stopped
+  */
   void stop(ActorRef<?> actor);
 
   /**
@@ -68,10 +69,10 @@ public interface ActorSystem {
   */
   void stop();
 
-    /**
-     * Possible modes to create an actor. {@code LOCALE} mode is used to create an actor
-     * that acts in the local system. {@code REMOTE} mode is used to create remote actors.
-     */
+  /**
+  * Possible modes to create an actor. {@code LOCALE} mode is used to create an actor
+  * that acts in the local system. {@code REMOTE} mode is used to create remote actors.
+  */
   enum ActorMode {
     LOCAL,
     REMOTE

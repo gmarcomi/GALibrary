@@ -67,10 +67,10 @@ public class ActorRefTest {
         ActorRef ref1 = system.actorOf(TrivialActor.class);
         ActorRef ref2 = system.actorOf(TrivialActor.class);
         System.out.println(ref1.compareTo(ref1));
-        Assert.assertNotEquals("Two references must appear as different, using the compareTo method",
-                1, ref1.compareTo(ref2));
+        Assert.assertNotEquals("Two references must appear as different using the compareTo method",
+            0, ref1.compareTo(ref2));
         Assert.assertEquals("A reference must be equal to itself according to compareTo method",
-                1, ref1.compareTo(ref1));
+            0, ref1.compareTo(ref1));
     }
 }
 

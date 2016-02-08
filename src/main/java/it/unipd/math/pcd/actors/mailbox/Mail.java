@@ -22,6 +22,7 @@
  * SOFTWARE.
  * <p/>
  */
+
 package it.unipd.math.pcd.actors.mailbox;
 
 import it.unipd.math.pcd.actors.Message;
@@ -33,21 +34,25 @@ import it.unipd.math.pcd.actors.Message;
  * @since 1.1
  * 
  */
+
 public interface Mail<T extends Message> {
-	/**
-	 * Provides the content of a Mail
-	 * @return the content of mail
-	 */
-	T getMessage();
-	/**
-	 * Provides the type of mail
-	 * @return the {@code state} value of the mail's state
-	 */
-	State getState();
-	enum State {
-        CONTINUE,
-        PAUSE,
-        STOP
-    }
+  
+  /**
+  * Provides the content of a Mail.
+  * @return the content of mail
+  */
+  T getMessage();
+  
+  /**
+  * Provides the type of mail.
+  * @return the {@code state} value of the mail's state
+  */
+  State getState();
+  
+  enum State {
+    CONTINUE,
+    PAUSE,
+    STOP
+  }
 
 }

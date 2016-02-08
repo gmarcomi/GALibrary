@@ -22,6 +22,7 @@
  * SOFTWARE.
  * <p/>
  */
+
 package it.unipd.math.pcd.actors.mailbox;
 
 import it.unipd.math.pcd.actors.AbsActor;
@@ -36,96 +37,103 @@ import it.unipd.math.pcd.actors.mailbox.Mail.State;
  * @since 1.1
  * 
  */
+
 public class MailBoxManager<T extends Message> implements Runnable {
-	
-	private AbsActor actor;
-	private MailBoxQueue mailbox=new MailBoxQueue();
-	private Status status= new Status();
-	private boolean stop=false;
-	
-	public MailBoxManager(AbsActor actor) {
-		this.actor=actor;
-	}
-	
-	@Override
-	public void run() {
-		try{
-			/*
-			 * if the mailbox is stopped, the execution runs until the last
-			 * message is processed.
-			 */
-			while(!stop){
-				//reference of the next elaborated message
-				Message message=null;
-				synchronized (mailbox) {
-					if(mailbox.isEmpty())
-						mailbox.wait();
-					else{
-						//get the reference of the top
-						Mail mail = mailbox.remove();
-						if(mail.getState() == State.STOP)
-							stop=true;
-						else
-							message = mail.getMessage();
-					}
-				}
-				//signal the actor for the elaboration
-				if(message != null)
-					actor.receive(message);
-				Thread.sleep(40);
-			}
-			while(!mailbox.isEmpty()){
-				//not other thread can access to mailbox
-				Mail mail = mailbox.remove();
-				Message message = mail.getMessage();
-				actor.receive(message);
-				Thread.sleep(20);
-			}
-		}
-		catch(InterruptedException e){
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Add a new message to mailbox
-	 * @param message The message
-	 * @return The result of operation
-	 */
-	public boolean addNewMail(T message){
-		boolean result=false;
-		synchronized(status){
-			if(stop != true || status.getStatus()){
-				//synch method
-				mailbox.addMessage(new BaseMail(message));
-				result = true;
-			}
-		}
-		return result;
-	}
-	
-	/**
-	 * Stop the mailbox
-	 */
-	public void stop(){
-		synchronized(status){
-			mailbox.addMessage(new StopMail());
-			status.setStop();
-		}
-	}
-	
-	/*
-	 * monitor inner class necessary for adding of message
-	 * and prevent the adding of message next the adding of a StopMail
-	 */
-	private class Status{
-		private boolean status = true;
-		public void setStop(){
-			status = false;
-		}
-		public boolean getStatus(){
-			return status;
-		}
-	};
-	
+  private AbsActor actor;
+  private MailBoxQueue mailbox = new MailBoxQueue();
+  private Status status = new Status();
+  private boolean stop = false;
+  
+  /**
+  * The constructor.
+  * @param actor The reference of the owner of the MailBoxManager instance
+  */
+  public MailBoxManager(AbsActor actor) {
+    this.actor = actor;
+  }
+
+  @Override
+  public void run() {
+    try {
+      /*
+      * if the mailbox is stopped, the execution runs until the last
+      * message is processed.
+      */
+      while (!stop) {
+        //reference of the next elaborated message
+        Message message = null;
+        synchronized (mailbox) {
+          if (mailbox.isEmpty()) {
+            mailbox.wait();
+          } else {
+            //get the reference of the top
+            Mail mail = mailbox.remove();
+            if (mail.getState() == State.STOP) {
+              stop = true;
+            } else {
+              message = mail.getMessage();
+            }
+          }
+        }
+        //signal the actor for the elaboration
+        if (message != null) {
+          actor.receive(message);
+        }
+      }
+      while (!mailbox.isEmpty()) {
+        //not other thread can access to mailbox
+        Mail mail = mailbox.remove();
+        Message message = mail.getMessage();
+        actor.receive(message);
+      }
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+  * Add a new message to mailbox.
+  * @param message The message
+  * @return The result of operation
+  */
+  
+  public boolean addNewMail(T message) {
+    boolean result = false;
+    synchronized (status) {
+      if (stop != true || status.getStatus()) {
+        //synch method
+        mailbox.addMessage(new BaseMail(message));
+        result = true;
+      }
+    }
+    return result;
+  }
+  
+  /**
+  * Stop the mailbox.
+  */
+  
+  public void stop() {
+    synchronized (status) {
+      mailbox.addMessage(new StopMail());
+      status.setStop();
+    }
+  }
+  
+  /*
+  * monitor inner class necessary for adding of message
+  * and prevent the adding of message next the adding of a StopMail
+  */
+  
+  private class Status {
+    private boolean status = true;
+    
+    public void setStop() {
+      status = false;
+    }
+    
+    public boolean getStatus() {
+      return status;
+    }
+  }
 }

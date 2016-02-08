@@ -21,29 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
-
-/**
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
  */
 
 package it.unipd.math.pcd.actors;
 
-/**
- * A message that can be sent among actors
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
+import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
+/** 
+ * The system of actors. Using the system it is possible to:
+ * <ul>
+ *     <li>Return the equivalent actor of an ActorRef</li>
+ *     <li>Register an MailBoxManager task to the system pool</li>
+ * </ul>
+ * @author Gabriele Marcomin
+ * @version 1.2
+ * @since 1.2
  */
-public interface Message {
+public interface ActorSystemCom {
+  
+  /**
+   * Retrieves the corresponding Actor of {@code ref}.
+   * @param ref The reference of ActorRef
+   * @return The corresponding Actor
+   */
+  Actor<? extends Message> getActor(ActorRef ref);
+
 }

@@ -22,6 +22,7 @@
  * SOFTWARE.
  * <p/>
  */
+
 package it.unipd.math.pcd.actors.exceptions;
 
 import it.unipd.math.pcd.actors.Message;
@@ -34,13 +35,12 @@ import it.unipd.math.pcd.actors.Message;
  * @since 1.0
  */
 public class UnsupportedMessageException extends RuntimeException {
-
-    /**
-     * The unsupported message
-     */
-    private Message message;
-
-    public UnsupportedMessageException(Message message) {
-        this.message = message;
-    }
+  /**
+  * The unsupported message.
+  */
+  private Message message;
+  
+  public UnsupportedMessageException(Message message) {
+    this.message = message;
+  }
 }

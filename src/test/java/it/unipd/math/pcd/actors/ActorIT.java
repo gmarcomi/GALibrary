@@ -53,8 +53,7 @@ import org.junit.Test;
  * Integration test suite on actor features.
  *
  * @author Riccardo Cardin
- * @author Gabriele Marcomin
- * @version 1.2
+ * @version 1.0
  * @since 1.0
  */
 public class ActorIT {
@@ -106,7 +105,7 @@ public class ActorIT {
             adder.send(new Increment(), counter);
         }
         //more time sleep
-        Thread.sleep(10000);
+        Thread.sleep(2000);
         Assert.assertEquals("A counter that was incremented 1000 times should be equal to 1000",
                 200, ((CounterActor) counter.getUnderlyingActor(system)).getCounter());
     }

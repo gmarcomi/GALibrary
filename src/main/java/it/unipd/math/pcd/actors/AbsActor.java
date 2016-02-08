@@ -22,6 +22,7 @@
  * SOFTWARE.
  * <p/>
  */
+
 package it.unipd.math.pcd.actors;
 
 import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
@@ -34,49 +35,63 @@ import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
  * @since 1.0
  * 
  */
-public abstract class AbsActor<T extends Message> implements Actor<T>, ActionActor<T>{
-    /**
-     * Self-reference of the actor
-     */
-    protected ActorRef<T> self;
-    /**
-     * Sender of the current message
-     */
-    protected ActorRef<T> sender;
-    //the manager of the mail
-    private MailBoxManager<T> receiver;
-    private Thread threadMB;
-    public AbsActor(){
-    	receiver= new MailBoxManager<T>(this);
-    	threadMB = new Thread(receiver);
-    	threadMB.start();
+
+public abstract class AbsActor<T extends Message> implements Actor<T>, ActionActor<T> {
+  /**
+  * Self-reference of the actor.
+  */
+  protected ActorRef<T> self;
+  /**
+  * Sender of the current message.
+  */
+  protected ActorRef<T> sender;
+  //the manager of the mail
+  private MailBoxManager<T> receiver;
+  private Thread threadMb;
+  
+  /**
+   * Default constructor.
+   */
+  
+  public AbsActor() {
+    receiver = new MailBoxManager<T>(this);
+    threadMb = new Thread(receiver);
+    threadMb.start();
+  }
+  
+  /**
+  * Sets the self-reference.
+  *
+  * @param self The reference to itself
+  * @return The actor.
+  */
+  
+  protected final Actor<T> setSelf(ActorRef<T> self) {
+    this.self = self;
+    return this;
+  }
+  
+  @Override
+  public boolean addMessage(T message, ActorRef<T> sender) {
+    this.sender = sender;
+    if (threadMb.isInterrupted()) {
+      return false;
     }
-    /**
-     * Sets the self-reference.
-     *
-     * @param self The reference to itself
-     * @return The actor.
-     */
-    protected final Actor<T> setSelf(ActorRef<T> self) {
-     this.self = self;
-        return this;
-    }
+    return receiver.addNewMail(message);
+  }
     
-    @Override
-    public boolean addMessage(T message, ActorRef<T> sender) {
-    	this.sender=sender;
-    	if(threadMB.isInterrupted())
-    		return false;
-    	return receiver.addNewMail(message);
-    }
+  @Override
+  public boolean getInterrupted() {
+    return threadMb.isInterrupted();
+  }
     
-    @Override
-    public boolean getInterrupted() {
-    	return threadMB.isInterrupted();
-    }
-    
-    @Override
-    public void stop(){
-    	receiver.stop();
-    }
+  @Override
+  public void stop() {
+    receiver.stop();
+  }
+  
+  @Override
+  public Runnable getTaskRef(){
+    return (Runnable) receiver;
+  }
 }

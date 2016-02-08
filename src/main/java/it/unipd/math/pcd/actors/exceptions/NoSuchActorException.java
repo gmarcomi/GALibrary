@@ -22,6 +22,7 @@
  * SOFTWARE.
  * <p/>
  */
+
 package it.unipd.math.pcd.actors.exceptions;
 
 /**
@@ -33,19 +34,18 @@ package it.unipd.math.pcd.actors.exceptions;
  * @since 1.0
  */
 public class NoSuchActorException extends RuntimeException {
+  
+  public NoSuchActorException() {}
 
-    public NoSuchActorException() {
-    }
+  public NoSuchActorException(String message) {
+    super(message);
+  }
 
-    public NoSuchActorException(String message) {
-        super(message);
-    }
-
-    public NoSuchActorException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public NoSuchActorException(Throwable cause) {
-        super(cause);
-    }
+  public NoSuchActorException(String message, Throwable cause) {
+    super(message, cause);
+  }
+  
+  public NoSuchActorException(Throwable cause) {
+    super(cause);
+  }
 }

@@ -26,25 +26,41 @@
  * @version 1.1
  * @since 1.1
  */
+
 package it.unipd.math.pcd.actors;
+
+
 /**
- * An actor who cans add, gets his state and stops itself
+ * An actor who cans add, gets his state and be stops.
+ * @author Gabriele Marcomin
+ * @version 1.2
+ * @version 1.1
  */
+
 public interface ActionActor<T extends Message> {
-	/**
-     * Adds a message to the actor
-     *
-     * @param message The type of messages the actor can receive
-     * @param sender The sender's ActorRef of the message
-     */
-	boolean addMessage(T message,ActorRef<T> sender);
-	/**
-	 * Gets the state of actor
-	 * @return true if actor is interrupted
-	 */
-	boolean getInterrupted();
-	/**
-     * Stops the actor
-     */
-	void stop();
+  
+  /**
+  * Adds a message to the actor.
+  *
+  * @param message The type of messages the actor can receive
+  * @param sender The sender's ActorRef of the message
+  */
+  boolean addMessage(T message,ActorRef<T> sender);
+
+  /**
+  * Gets the state of actor.
+  * @return true if actor is interrupted
+  */
+  boolean getInterrupted();
+
+  /**
+  * Stops the actor.
+  */
+  void stop();
+  
+  /**
+   * Gets the reference of the manager task.
+   * @return the reference of task.
+   */
+  Runnable getTaskRef();
 }
