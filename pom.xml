@@ -21,7 +21,7 @@
   <packaging>jar</packaging>
 
   <name>pcd-actors</name>
-  <url>https://github.com/rcardin/pcd-actors</url>
+  <url>https://github.com/gmarcomi/GALibrary</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

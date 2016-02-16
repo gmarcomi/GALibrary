@@ -29,8 +29,10 @@ import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
 import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -103,15 +105,19 @@ public abstract class AbsActorSystem implements ActorSystem,ActorSystemCom {
   public void stop() {
     //other operation aren't allowed on actors
     synchronized (actors) {
-      for (Entry<ActorRef<?>, Actor<?>> entry : actors.entrySet()) {
-        ActorRef<?> actorRef = entry.getKey();
-        stop(actorRef);
+      Queue<ActorRef<?>> queueKeys = new LinkedList<ActorRef<?>>();
+      for (ActorRef<?> actor : actors.keySet()) {
+        queueKeys.add(actor);
+      }
+      while (!queueKeys.isEmpty()) {
+        ActorRef<?> actor = queueKeys.remove();
+        stop(actor);
       }
     }
   }
   
   @Override
-  public Actor<? extends Message> getActor(ActorRef ref){
+  public Actor<? extends Message> getActor(ActorRef ref) {
     Actor<? extends Message> tmp = null;
     //one access to map at time
     synchronized (actors) {

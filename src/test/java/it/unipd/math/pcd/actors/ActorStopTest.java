@@ -28,7 +28,9 @@ package it.unipd.math.pcd.actors;
 import it.unipd.math.pcd.actors.utils.ActorSystemFactory;
 import it.unipd.math.pcd.actors.utils.actors.TrivialActor;
 import it.unipd.math.pcd.actors.utils.actors.counter.CounterActor;
+import it.unipd.math.pcd.actors.utils.messages.counter.Decrement;
 import it.unipd.math.pcd.actors.utils.messages.counter.Increment;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +57,7 @@ public class ActorStopTest {
   @Test
   public void shouldCompleteAnyMessaggesAfterStop() throws InterruptedException {
     TestActorRef counter = new TestActorRef(system.actorOf(CounterActor.class));
-    CounterActor ref = (CounterActor) counter.getUnderlyingActor(system);
+    CounterActor ref = (CounterActor)counter.getUnderlyingActor(system);
     for (int i = 0; i < 100; i++) {
       TestActorRef adder = new TestActorRef(system.actorOf(TrivialActor.class));
       adder.send(new Increment(), counter);
@@ -63,7 +65,27 @@ public class ActorStopTest {
     system.stop((ActorRef)counter);
     //more time sleep
     Thread.sleep(1000);
-    Assert.assertEquals("A counter that was incremented 1000 times should be equal to 1000",
+    Assert.assertEquals("A counter that was incremented 100 times should be equal to 100",
         100, ref.getCounter());
+  }
+  
+  @Test
+  public void shouldCompleteAnyMessaggesAfterStopEmAll() throws InterruptedException {
+    TestActorRef counter = new TestActorRef(system.actorOf(CounterActor.class));
+    TestActorRef counter2 = new TestActorRef(system.actorOf(CounterActor.class));
+    CounterActor ref = (CounterActor) counter.getUnderlyingActor(system);
+    CounterActor ref2 = (CounterActor) counter2.getUnderlyingActor(system);
+    for (int i = 0; i < 100; i++) {
+      TestActorRef adder = new TestActorRef(system.actorOf(TrivialActor.class));
+      adder.send(new Increment(), counter);
+      adder.send(new Decrement(), counter2);
+    }
+    system.stop();
+    //more time sleep
+    Thread.sleep(1000);
+    Assert.assertEquals("A counter that was incremented 100 times should be equal to 100",
+        100, ref.getCounter());
+    Assert.assertEquals("A counter that was decremented 100 times should be equal to -100",
+        -100, ref2.getCounter());
   }
 }
