@@ -1,6 +1,5 @@
-# pcd-actors
-A mock system that abstract a simplified implementation of the [actor model](https://en.wikipedia.org/wiki/Actor_model). 
-The system has to be considered as a mock because the main components are intentionally left abstract.
+# GALibrary
+GALibrary(Gabriele's Actor Library) is a simplified implementation of the [actor model](https://en.wikipedia.org/wiki/Actor_model).
 
 The main abstract types of the system are the following:
 
@@ -334,7 +333,7 @@ Then the `Message` becomes eligible for elaboration.
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Riccardo Cardin
+Copyright (c) 2015 Gabriele Marcomin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation the 
