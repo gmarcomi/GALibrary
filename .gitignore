@@ -1,1 +1,6 @@
 /target/
+
+*.project
+.project
+pcd-actors.iml
+.project
