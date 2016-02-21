@@ -37,6 +37,12 @@
  */
 package it.unipd.math.pcd.actors;
 
+import sirius.galibrary.AbsActorSystem;
+import sirius.galibrary.Actor;
+import sirius.galibrary.ActorRef;
+import sirius.galibrary.ActorSystem;
+import sirius.galibrary.Message;
+
 
 /**
  * Decorates an {@link ActorRef} adding the ability to get the underlying actor associated to the reference.

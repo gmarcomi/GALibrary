@@ -37,7 +37,7 @@
  */
 package it.unipd.math.pcd.actors.utils.actors.ping.pong;
 
-import it.unipd.math.pcd.actors.AbsActor;
+import sirius.galibrary.AbsActor;
 import it.unipd.math.pcd.actors.utils.messages.ping.pong.PingMessage;
 import it.unipd.math.pcd.actors.utils.messages.ping.pong.PingPongMessage;
 import it.unipd.math.pcd.actors.utils.messages.ping.pong.PongMessage;

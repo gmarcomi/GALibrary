@@ -35,6 +35,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import sirius.galibrary.ActorRef;
+import sirius.galibrary.ActorSystem;
+
 /**
  * Integration test suite on actor stop feature.
  *

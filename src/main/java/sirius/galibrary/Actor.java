@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  * <p/>
  * Copyright (c) 2015 Riccardo Cardin
@@ -23,24 +23,24 @@
  * <p/>
  */
 
-package it.unipd.math.pcd.actors.exceptions;
-
-import it.unipd.math.pcd.actors.Message;
+package sirius.galibrary;
 
 /**
- * Thrown to indicate that the message requested is not accepted by an actor.
+ * An actor in the <code>pcd-actor</code> system that receives
+ * messages of a defined type.
  *
  * @author Riccardo Cardin
  * @version 1.0
  * @since 1.0
  */
-public class UnsupportedMessageException extends RuntimeException {
+public interface Actor<T extends Message> {
+
   /**
-  * The unsupported message.
+  * Defines the interface of the actor.
+  *
+  * @param message The type of messages the actor can receive
+  * @throws actors.exceptions.UnsupportedMessageException If the message is not supported by
+  *         the actor.
   */
-  private Message message;
-  
-  public UnsupportedMessageException(Message message) {
-    this.message = message;
-  }
+  void receive(T message);
 }

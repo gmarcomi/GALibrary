@@ -39,9 +39,13 @@ package it.unipd.math.pcd.actors;
 
 import it.unipd.math.pcd.actors.utils.ActorSystemFactory;
 import it.unipd.math.pcd.actors.utils.actors.TrivialActor;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import sirius.galibrary.ActorRef;
+import sirius.galibrary.ActorSystem;
 
 /**
  * Test cases about {@link ActorRef} type.

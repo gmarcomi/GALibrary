@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Gabriele Marcomin
+ * Copyright (c) 2015 Riccardo Cardin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,23 @@
  * <p/>
  */
 
-package it.unipd.math.pcd.actors.mailbox;
+package sirius.galibrary;
 
-import it.unipd.math.pcd.actors.Message;
 /**
- * The mail in the MailBox
+ * A reference of an actor that allow to locate it in the actor system.
+ * Using this reference it is possible to send a message among actors.
  * 
- * @author Gabriele Marcomin
- * @version 1.1
- * @since 1.1
- * 
+ * @author Riccardo Cardin
+ * @version 1.0
+ * @since 1.0
  */
+public interface ActorRef<T extends Message> extends Comparable<ActorRef> {
 
-public interface Mail<T extends Message> {
-  
   /**
-  * Provides the content of a Mail.
-  * @return the content of mail
+  * Sends a {@code message} to another actor.
+  *
+  * @param message The message to send
+  * @param to The actor to which sending the message
   */
-  T getMessage();
-  
-  /**
-  * Provides the type of mail.
-  * @return the {@code state} value of the mail's state
-  */
-  State getState();
-  
-  enum State {
-    CONTINUE,
-    PAUSE,
-    STOP
-  }
-
+  void send(T message, ActorRef to);
 }

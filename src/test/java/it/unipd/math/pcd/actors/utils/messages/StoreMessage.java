@@ -37,7 +37,7 @@
  */
 package it.unipd.math.pcd.actors.utils.messages;
 
-import it.unipd.math.pcd.actors.Message;
+import sirius.galibrary.Message;
 
 /**
  * Please, insert description here.

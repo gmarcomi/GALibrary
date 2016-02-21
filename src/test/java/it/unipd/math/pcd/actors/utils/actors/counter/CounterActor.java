@@ -37,7 +37,7 @@
  */
 package it.unipd.math.pcd.actors.utils.actors.counter;
 
-import it.unipd.math.pcd.actors.AbsActor;
+import sirius.galibrary.AbsActor;
 import it.unipd.math.pcd.actors.utils.messages.counter.*;
 
 /**

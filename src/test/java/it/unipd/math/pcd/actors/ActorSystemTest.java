@@ -37,13 +37,17 @@
  */
 package it.unipd.math.pcd.actors;
 
-import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
 import it.unipd.math.pcd.actors.utils.ActorSystemFactory;
 import it.unipd.math.pcd.actors.utils.actors.TrivialActor;
 import it.unipd.math.pcd.actors.utils.messages.TrivialMessage;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import sirius.galibrary.ActorRef;
+import sirius.galibrary.ActorSystem;
+import sirius.galibrary.exceptions.NoSuchActorException;
 
 /**
  * Tests features of an actors' system.

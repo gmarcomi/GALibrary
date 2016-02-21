@@ -37,7 +37,7 @@
  */
 package it.unipd.math.pcd.actors.utils.messages.ping.pong;
 
-import it.unipd.math.pcd.actors.Message;
+import sirius.galibrary.Message;
 import it.unipd.math.pcd.actors.utils.actors.ping.pong.PingPongActor;
 
 /**

@@ -1,7 +1,7 @@
-                    GNU GENERAL PUBLIC LICENSE
+/*                    GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
- Copyright (C) 1989, 1991 Free Software Foundation, Inc., <http://fsf.org/>
+ Copyright (C) 1989, 1991 Free Software Foundation, Inc., http://fsf.org
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
@@ -326,14 +326,49 @@ You should also get your employer (if you work as a programmer) or your
 school, if any, to sign a "copyright disclaimer" for the program, if
 necessary.  Here is a sample; alter the names:
 
-  Yoyodyne, Inc., hereby disclaims all copyright interest in the program
-  `Gnomovision' (which makes passes at compilers) written by James Hacker.
+Yoyodyne, Inc., hereby disclaims all copyright interest in the program
+`Gnomovision' (which makes passes at compilers) written by James Hacker.
 
-  {signature of Ty Coon}, 1 April 1989
-  Ty Coon, President of Vice
+{signature of Ty Coon}, 1 April 1989
+Ty Coon, President of Vice
 
 This General Public License does not permit incorporating your program into
 proprietary programs.  If your program is a subroutine library, you may
 consider it more useful to permit linking proprietary applications with the
 library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.
+*/
+
+package sirius.galibrary.mailbox;
+
+import sirius.galibrary.Message;
+/**
+ * The mail in the MailBox
+ * 
+ * @author Gabriele Marcomin
+ * @version 1.1
+ * @since 1.1
+ * 
+ */
+
+public interface Mail<T extends Message> {
+  
+  /**
+  * Provides the content of a Mail.
+  * @return the content of mail
+  */
+  T getMessage();
+  
+  /**
+  * Provides the type of mail.
+  * @return the {@code state} value of the mail's state
+  */
+  State getState();
+  
+  enum State {
+    CONTINUE,
+    PAUSE,
+    STOP
+  }
+
+}

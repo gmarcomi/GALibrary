@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License (MIT)
  * <p/>
  * Copyright (c) 2015 Riccardo Cardin
@@ -21,28 +21,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
+ * 
+ * @author Riccardo Cardin
+ * @version 1.0
+ * @since 1.0
  */
 
-package it.unipd.math.pcd.actors;
+package sirius.galibrary;
 
-import it.unipd.math.pcd.actors.mailbox.MailBoxManager;
-/** 
+/**
  * The system of actors. Using the system it is possible to:
  * <ul>
- *     <li>Return the equivalent actor of an ActorRef</li>
- *     <li>Register an MailBoxManager task to the system pool</li>
+ *     <li>Create a new instance of an actor</li>
+ *     <li>Stopping an actor</li>
  * </ul>
- * @author Gabriele Marcomin
- * @version 1.2
- * @since 1.2
  */
-public interface ActorSystemCom {
+public interface ActorSystem {
   
   /**
-   * Retrieves the corresponding Actor of {@code ref}.
-   * @param ref The reference of ActorRef
-   * @return The corresponding Actor
-   */
-  Actor<? extends Message> getActor(ActorRef ref);
+  * Create an instance of {@code actor} returning a {@link ActorRef reference} 
+  * to it using the given {@code mode}.
+  *
+  * @param actor The type of actor that has to be created
+  * @param mode The mode of the actor requested
+  *
+  * @return A reference to the actor
+  */
+  ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode);
 
+  /**
+  * Create an instance of {@code actor} that executes locally.
+  *
+  * @param actor The type of actor that has to be created
+  * @return A reference to the actor
+  */
+  ActorRef<? extends Message> actorOf(Class<? extends Actor> actor);
+
+  /**
+  * Stops {@code actor}.
+  *
+  * @param actor The actor to be stopped
+  */
+  void stop(ActorRef<?> actor);
+
+  /**
+  * Stops all actors of the system.
+  */
+  void stop();
+
+  /**
+  * Possible modes to create an actor. {@code LOCALE} mode is used to create an actor
+  * that acts in the local system. {@code REMOTE} mode is used to create remote actors.
+  */
+  enum ActorMode {
+    LOCAL,
+    REMOTE
+  }
 }

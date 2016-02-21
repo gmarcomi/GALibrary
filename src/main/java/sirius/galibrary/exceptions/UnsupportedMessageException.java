@@ -1,6 +1,7 @@
-/**The MIT License (MIT)
+/**
+ * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Gabriele Marcomin
+ * Copyright (c) 2015 Riccardo Cardin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,28 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * <p/>
- *
  */
 
-package it.unipd.math.pcd.actors;
+package sirius.galibrary.exceptions;
+
+import sirius.galibrary.Message;
 
 /**
- * An implementation of{@code AbsActorSystem}.
- * @author Gabriele Marcomin
- * @version 1.2
- * @since 1.1
+ * Thrown to indicate that the message requested is not accepted by an actor.
+ *
+ * @author Riccardo Cardin
+ * @version 1.0
+ * @since 1.0
  */
-
-public class BaseActorSystem extends AbsActorSystem {
-  @Override
-  protected ActorRef createActorReference(ActorMode mode) {
-    ActorRef result = null;
-    if (mode == ActorMode.LOCAL) {
-      result = new BaseActorRef<>((ActorSystemCom)this);
-    } else {
-      throw new IllegalArgumentException();
-    }
-    return result;
+public class UnsupportedMessageException extends RuntimeException {
+  /**
+  * The unsupported message.
+  */
+  private Message message;
+  
+  public UnsupportedMessageException(Message message) {
+    this.message = message;
   }
-
 }

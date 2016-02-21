@@ -37,14 +37,15 @@
  */
 package it.unipd.math.pcd.actors.utils;
 
-import it.unipd.math.pcd.actors.AbsActorSystem;
-import it.unipd.math.pcd.actors.ActorSystem;
 import org.reflections.Reflections;
+
+import sirius.galibrary.AbsActorSystem;
+import sirius.galibrary.ActorSystem;
 
 import java.util.Set;
 
 /**
- * Scans the classpath and instantiates the concrete class that implements {@link it.unipd.math.pcd.actors.ActorSystem}.
+ * Scans the classpath and instantiates the concrete class that implements {@link sirius.galibrary.ActorSystem}.
  *
  * @author Riccardo Cardin
  * @version 1.0

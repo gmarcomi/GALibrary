@@ -37,7 +37,7 @@
  */
 package it.unipd.math.pcd.actors.utils.messages.counter;
 
-import it.unipd.math.pcd.actors.Message;
+import sirius.galibrary.Message;
 
 /**
  * Base class for messages that are used to implement a distributed counter.

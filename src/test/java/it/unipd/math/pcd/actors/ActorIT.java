@@ -45,9 +45,12 @@ import it.unipd.math.pcd.actors.utils.actors.StoreActor;
 import it.unipd.math.pcd.actors.utils.messages.StoreMessage;
 import it.unipd.math.pcd.actors.utils.messages.counter.Increment;
 import it.unipd.math.pcd.actors.utils.messages.ping.pong.PingMessage;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import sirius.galibrary.ActorSystem;
 
 /**
  * Integration test suite on actor features.

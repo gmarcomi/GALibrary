@@ -36,7 +36,7 @@
  * @since 1.0
  */
 
-package it.unipd.math.pcd.actors;
+package sirius.galibrary;
 
 /**
  * A message that can be sent among actors

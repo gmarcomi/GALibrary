@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Gabriele Marcomin
+ * Copyright (c) 2015 Riccardo Cardin
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,29 @@
  * <p/>
  */
 
-package it.unipd.math.pcd.actors.mailbox;
-
-import it.unipd.math.pcd.actors.Message;
+package sirius.galibrary.exceptions;
 
 /**
- * An implementation of Message which represents the stop command to receiver
- * @author Gabriele Marcomin
- * @version 1.1
- * @since 1.1
+ * Thrown to indicate an error during the creation of a new actor of unknown type in a specified
+ * {@link sirius.galibrary.ActorSystem actor system}.
+ *
+ * @author Riccardo Cardin
+ * @version 1.0
+ * @since 1.0
  */
-
-public class StopMail implements Mail<Message> {
+public class NoSuchActorException extends RuntimeException {
   
-  @Override
-  public Message getMessage() {
-    return null;
+  public NoSuchActorException() {}
+
+  public NoSuchActorException(String message) {
+    super(message);
   }
 
-  @Override
-  public State getState() {
-    return Mail.State.STOP;
+  public NoSuchActorException(String message, Throwable cause) {
+    super(message, cause);
+  }
+  
+  public NoSuchActorException(Throwable cause) {
+    super(cause);
   }
 }

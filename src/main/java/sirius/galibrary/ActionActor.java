@@ -1,7 +1,7 @@
-                    GNU GENERAL PUBLIC LICENSE
+/*                    GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
- Copyright (C) 1989, 1991 Free Software Foundation, Inc., <http://fsf.org/>
+ Copyright (C) 1989, 1991 Free Software Foundation, Inc., http://fsf.org
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
@@ -326,14 +326,53 @@ You should also get your employer (if you work as a programmer) or your
 school, if any, to sign a "copyright disclaimer" for the program, if
 necessary.  Here is a sample; alter the names:
 
-  Yoyodyne, Inc., hereby disclaims all copyright interest in the program
-  `Gnomovision' (which makes passes at compilers) written by James Hacker.
+Yoyodyne, Inc., hereby disclaims all copyright interest in the program
+`Gnomovision' (which makes passes at compilers) written by James Hacker.
 
-  {signature of Ty Coon}, 1 April 1989
-  Ty Coon, President of Vice
+{signature of Ty Coon}, 1 April 1989
+Ty Coon, President of Vice
 
 This General Public License does not permit incorporating your program into
 proprietary programs.  If your program is a subroutine library, you may
 consider it more useful to permit linking proprietary applications with the
 library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.
+*/
+
+package sirius.galibrary;
+
+
+/**
+ * An actor who cans add, gets his state and be stops.
+ * @author Gabriele Marcomin
+ * @version 1.2
+ * @version 1.1
+ */
+
+public interface ActionActor<T extends Message> {
+  
+  /**
+  * Adds a message to the actor.
+  *
+  * @param message The type of messages the actor can receive
+  * @param sender The sender's ActorRef of the message
+  */
+  boolean addMessage(T message,ActorRef<T> sender);
+
+  /**
+  * Gets the state of actor.
+  * @return true if actor is interrupted
+  */
+  boolean getInterrupted();
+
+  /**
+  * Stops the actor.
+  */
+  void stop();
+  
+  /**
+   * Gets the reference of the manager task.
+   * @return the reference of task.
+   */
+  Runnable getTaskRef();
+}
